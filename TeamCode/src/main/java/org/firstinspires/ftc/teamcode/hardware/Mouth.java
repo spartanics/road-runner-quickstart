@@ -43,16 +43,15 @@ public class Mouth {
     private OpMode myOpMode;   // gain access to methods in the calling OpMode.
 
 
-    double left_trigger = myOpMode.gamepad2.left_trigger;
-    double right_trigger = myOpMode.gamepad2.right_trigger;
-
-    double power = -left_trigger + right_trigger;
-
 
     CRServo mouth = null;
     public Mouth(OpMode opmode) {
         myOpMode = opmode;
     }
+    private double left_trigger = 0.0;
+    private double right_trigger = 0.0;
+
+    private double power = 0.0;
 
     public void init() {
         // Define and Initialize Motors (note: need to use reference to actual OpMode).
@@ -62,14 +61,13 @@ public class Mouth {
 
 
     public void listen() {
+        left_trigger = myOpMode.gamepad2.left_trigger;
+        right_trigger = myOpMode.gamepad2.right_trigger;
+        power = -left_trigger + right_trigger;
 
         mouth.setPower(power);
 
-
-        myOpMode.telemetry.addData("Left Trigger", "%.2f", left_trigger);
-        myOpMode.telemetry.addData("Right Trigger", "%.2f", right_trigger);
-        myOpMode.telemetry.addData("Power", "%.2f", power);
-
+        sendTelemetry();
     }
 
 

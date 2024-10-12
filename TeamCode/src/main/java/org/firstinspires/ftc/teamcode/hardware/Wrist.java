@@ -60,17 +60,22 @@ public class Wrist {
 
     public void listen() {
 
-        servo.setPosition(wristPosition);
         //bring wrist back
         if (myOpMode.gamepad2.x) {
-            wristPosition = 0;
+            wristPosition = 0.0;
             //strech wrist
-        } else if (myOpMode.gamepad2.a) {
-            wristPosition = 0.7;
-
-        } else if (myOpMode.gamepad2.b) {
-            wristPosition = 1;
         }
+
+        if (myOpMode.gamepad2.a) {
+            wristPosition = 0.7;
+        }
+
+        if (myOpMode.gamepad2.b) {
+            wristPosition = 1.0;
+        }
+
+        servo.setPosition(wristPosition);
+
     }
 
     public void sendTelemetry() {

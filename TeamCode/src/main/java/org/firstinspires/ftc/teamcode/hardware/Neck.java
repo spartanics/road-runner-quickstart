@@ -36,12 +36,15 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Neck {
 
 
     // Define class members
     double neckPosition = 0.0;
+    ElapsedTime runtime = new ElapsedTime();    // Use to determine when end game is starting.
+
 
 
     private OpMode myOpMode;   // gain access to methods in the calling OpMode.
@@ -54,20 +57,45 @@ public class Neck {
     public void init() {
         // Define and Initialize Motors (note: need to use reference to actual OpMode).
         servo = myOpMode.hardwareMap.get(Servo.class, "neck");
+
+        // set the range of the neck position
+        servo.scaleRange(0.4, 0.8);
+
+        servo.setPosition(0.5);
     }
 
 
 
     public void listen() {
+        boolean is_bumper_pressed = false;
+        if (runtime.seconds() > 1.0) {
+            // rotate right
+//            if (myOpMode.gamepad2.left_bumper) neckPosition = 0.3;
+//            if (myOpMode.gamepad2.right_bumper) neckPosition = 0.7;
+//            servo.setPosition(neckPosition);
+//            sendTelemetry();
 
-        servo.setPosition(neckPosition);
-        // rotate right
-        if (myOpMode.gamepad2.right_bumper && neckPosition < 1) {
-            neckPosition -=0.1;
-        // rotate left
-        } else if (myOpMode.gamepad2.left_bumper && neckPosition > 0) {
-            neckPosition +=0.1;
+            if (myOpMode.gamepad2.right_bumper && neckPosition > 0) {
+                neckPosition -= 0.2;
+                is_bumper_pressed = true;
 
+            } else if (myOpMode.gamepad2.left_bumper && neckPosition < 1) {
+                neckPosition += 0.2;
+                is_bumper_pressed = true;
+            }
+
+            if (neckPosition < 0.0) {
+                neckPosition = 0.0;
+            }
+            if (neckPosition > 1.0) {
+                neckPosition = 1.0;
+            }
+
+            if (is_bumper_pressed) {
+                servo.setPosition(neckPosition);
+                runtime.reset();
+                sendTelemetry();
+            }
         }
     }
 
