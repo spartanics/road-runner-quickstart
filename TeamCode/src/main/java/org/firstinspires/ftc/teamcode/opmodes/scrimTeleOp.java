@@ -137,6 +137,8 @@ public class scrimTeleOp extends OpMode {
         viper.sendTelemetry();
         wrist.sendTelemetry();
 
+        telemetry.update();
+
     }
 
     @Override
