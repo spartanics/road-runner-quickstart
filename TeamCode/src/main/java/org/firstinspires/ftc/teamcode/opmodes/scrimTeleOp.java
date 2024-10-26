@@ -8,8 +8,6 @@ import org.firstinspires.ftc.teamcode.MecanumDrive;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.hardware.tidev2.Shoulder;
-
 
 // I AM DOCTOR IVO ROBOTNIK!
 @TeleOp(name = "scrimTeleOp", group = "OpModes")
