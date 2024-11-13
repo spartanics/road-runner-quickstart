@@ -15,9 +15,8 @@ public class SpecimenPark {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(55, -45, Math.toRadians(180)))
-                        .splineToLinearHeading(new Pose2d(-37, -47, Math.toRadians(90)), Math.toRadians(180))
-                .splineToLinearHeading(new Pose2d(-26,0, Math.toRadians(0)), Math.toRadians(0))
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(55, -45, Math.toRadians(-90)))
+                        .splineToConstantHeading(new Vector2d(50, -58), Math.toRadians(90))
 
                 .build());
 
