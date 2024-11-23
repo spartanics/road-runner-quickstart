@@ -67,7 +67,7 @@ public class rightAuto extends LinearOpMode {
                     .waitSeconds(0.5)
                     .afterTime(0, shoulder.autonDownHC())
                     .waitSeconds(1)
-                    .strafeTo(new Vector2d(0, 34))
+                    .strafeTo(new Vector2d(0, -34))
                     .waitSeconds(2)
                     .strafeToLinearHeading(new Vector2d(0,-55), Math.toRadians(-90))
                     .strafeTo(new Vector2d(35,-44))
