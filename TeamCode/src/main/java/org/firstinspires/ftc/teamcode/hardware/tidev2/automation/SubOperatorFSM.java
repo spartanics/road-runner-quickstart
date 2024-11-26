@@ -48,7 +48,7 @@ public class SubOperatorFSM {
     private final int THRESH_ELBOW = 50;
 
     private final int POS_VIPER_SUB = 1000;
-    private final int POS_VIPER_HANG = 4000;
+    private final int POS_VIPER_HANG = 4269;
 
     private final int POS_ELBOW_EXTEND_HORIZ_SUB = 400;
     private final int POS_ELBOW_EXTEND_ADJUST_SUB = 400;
@@ -60,6 +60,7 @@ public class SubOperatorFSM {
     private Viper viper;
     private Elbow elbow;
     private Shoulder shoulder;
+    private Claw claw;
 
     private Gamepad gamepad;
 
@@ -77,6 +78,7 @@ public class SubOperatorFSM {
         this.shoulder = shoulder;
         this.viper = viper;
         this.elbow = elbow;
+        this.claw = claw;
 
         subState = SubState.ZERO_SUBSTATE;
         subStateTimer = new ElapsedTime();
@@ -269,8 +271,10 @@ public class SubOperatorFSM {
 
                 if (subStateTimer.seconds() > 3.0) {
                     if (gamepad.a) {
+                        claw.setPivot(0);
                         viper.setTarget(POS_VIPER_HANG);
                         elbow.setElbow(POS_ELBOW_EXTEND_MAX_SUB);
+
                         subStateTimer.reset();
                         subState = SubState.PROCEED_HANG_SUBSTATE;
                     }
@@ -281,7 +285,7 @@ public class SubOperatorFSM {
             case PROCEED_HANG_SUBSTATE:
                 if (subStateTimer.seconds() > 1.0) {
                     if (gamepad.y) {
-                        shoulder.setTarget(900);
+                        shoulder.setTarget(POS_SHOULDER_HANG);
                         viper.setTarget(0);
                         elbow.setElbow(POS_ELBOW_EXTEND_MAX_SUB);
                     }
