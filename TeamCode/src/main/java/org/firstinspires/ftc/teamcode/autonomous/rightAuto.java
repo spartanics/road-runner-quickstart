@@ -145,6 +145,7 @@ public class rightAuto extends LinearOpMode {
                     new InstantAction(() -> intake.autonListen()),
                     new InstantAction(() -> claw.autonListen())
             ));
+
         }
 
 
@@ -161,6 +162,7 @@ public class rightAuto extends LinearOpMode {
                 claw.autonListen(),
                 build.build()
         ));
+        PoseStorage.storedPose = drive.pose;
     }
 
 }
