@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.autonomous;
+
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.InstantAction;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
@@ -9,13 +8,9 @@ import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
-
-// Non-RR imports
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
+
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.hardware.tidev2.Claw;
 import org.firstinspires.ftc.teamcode.hardware.tidev2.Elbow;
@@ -25,8 +20,8 @@ import org.firstinspires.ftc.teamcode.hardware.tidev2.Viper;
 
 
 @Config
-@Autonomous(name = "Right Auto", group = "Autonomous")
-public class rightAuto extends LinearOpMode {
+@Autonomous(name = "4 clip Robotnik Style", group = "Autonomous")
+public class rightAutoAlt extends LinearOpMode {
     Pose2d startPose;
     MecanumDrive drive;
 
@@ -109,6 +104,21 @@ public class rightAuto extends LinearOpMode {
 
 
                 .afterTime(1, shoulder.autonDown())
+                .setReversed(true)
+                .splineToSplineHeading(new Pose2d(new Vector2d(36, -58.5), Math.toRadians(-90)), Math.toRadians(0))
+
+                .afterTime(0, claw.autonCloseClaw())
+                .waitSeconds(0.3)
+                .afterTime(0, shoulder.autonHC())
+                //grab sample, routing towards chamber.
+                //raise arm to clip
+                .afterTime(1.5, viper.autonHangSpecimen())
+                .setReversed(true)
+                .splineToSplineHeading(new Pose2d(new Vector2d(6, -30), Math.toRadians(90)), Math.toRadians(90))
+
+                .afterTime(0, claw.autonOpenClaw())
+                .afterTime(0, viper.autonSlightOut())
+                .waitSeconds(0.5)
 
                 .setReversed(true)
                 .splineTo(new Vector2d(50,-60), Math.toRadians(-90))
