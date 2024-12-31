@@ -160,7 +160,7 @@ public class Shoulder {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            setTarget(850);
+            setTarget(800);
             return false;
         }
     }
