@@ -44,7 +44,7 @@ public class rightAutoAlt extends LinearOpMode {
         TrajectoryActionBuilder build = drive.actionBuilder(startPose)
                 .afterTime(0, shoulder.autonHC())
                 .afterTime(0.7, viper.autonHangSpecimen())
-                .strafeTo(new Vector2d(5, -33))
+                .strafeTo(new Vector2d(5, -30))
 
                 //put arm up while strafing
                 //stop and place the sample on the bar
