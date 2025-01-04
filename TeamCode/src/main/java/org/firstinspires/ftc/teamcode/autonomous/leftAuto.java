@@ -38,16 +38,14 @@ public class leftAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        startPose = new Pose2d(-14, -61, Math.toRadians(90));
+        startPose = new Pose2d(-38, -61, Math.toRadians(180));
         drive = new MecanumDrive(hardwareMap, startPose);
         TrajectoryActionBuilder build = drive.actionBuilder(startPose)
-
                 .splineToLinearHeading(new Pose2d(new Vector2d(-54.5, -54.5), Math.toRadians(225)), Math.toRadians(225))
                 .afterTime(0, shoulder.autonUpHB())
                 .waitSeconds(1)
                 .afterTime(0, viper.autonHB())
-                .afterTime(1, elbow.autonHB())
-                .strafeTo(new Vector2d(-56.5, -56.5))
+                .afterTime(1.1, elbow.autonHB())
                 .waitSeconds(2)
                 .afterTime(0, intake.autoOuttake())
                 .waitSeconds(1)
@@ -62,26 +60,22 @@ public class leftAuto extends LinearOpMode {
                 //one in hb
 
                 //pick sample
-                .splineToLinearHeading(new Pose2d(new Vector2d(-36, -28), Math.toRadians(180)), Math.toRadians(90))
-
-                .strafeTo(new Vector2d(-34, -28))
+                .splineToLinearHeading(new Pose2d(new Vector2d(-33, -29), Math.toRadians(180)), Math.toRadians(90))
                 .afterTime(0, elbow.autonPick())
                 .afterTime(0, intake.autoIntake())
                 .waitSeconds(0.5)
-                .strafeTo(new Vector2d(-36, -28))
-                .waitSeconds(0.5)
+                .strafeTo(new Vector2d(-35, -29))
+                .waitSeconds(2)
+                .afterTime(0, intake.autoStoptake())
                 .afterTime(0, elbow.autonZero())
-                .waitSeconds(0.5)
-                .afterTime(0.5, intake.autoStoptake())
-
+                .waitSeconds(1)
 
 
                 .splineToLinearHeading(new Pose2d(new Vector2d(-54.5, -54.5), Math.toRadians(225)), Math.toRadians(225))
                 .afterTime(0, shoulder.autonUpHB())
                 .waitSeconds(1)
                 .afterTime(0, viper.autonHB())
-                .afterTime(1, elbow.autonHB())
-                .strafeTo(new Vector2d(-56.5, -56.5))
+                .afterTime(1.1, elbow.autonHB())
                 .waitSeconds(2)
                 .afterTime(0, intake.autoOuttake())
                 .waitSeconds(1)
@@ -96,22 +90,21 @@ public class leftAuto extends LinearOpMode {
                 //2 in hb
 
                 //pick sample
-                .splineToLinearHeading(new Pose2d(new Vector2d(-48, -28), Math.toRadians(180)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(new Vector2d(-42, -29), Math.toRadians(180)), Math.toRadians(90))
                 .afterTime(0, elbow.autonPick())
                 .afterTime(0, intake.autoIntake())
                 .waitSeconds(0.5)
-                .strafeTo(new Vector2d(-36, -28))
-                .waitSeconds(0.5)
+                .strafeTo(new Vector2d(-44, -29))
+                .waitSeconds(2)
+                .afterTime(0, intake.autoStoptake())
                 .afterTime(0, elbow.autonZero())
-                .waitSeconds(0.5)
-                .afterTime(0.5, intake.autoStoptake())
+                .waitSeconds(1)
 
                 .splineToLinearHeading(new Pose2d(new Vector2d(-54.5, -54.5), Math.toRadians(225)), Math.toRadians(225))
                 .afterTime(0, shoulder.autonUpHB())
                 .waitSeconds(1)
                 .afterTime(0, viper.autonHB())
-                .afterTime(1, elbow.autonHB())
-                .strafeTo(new Vector2d(-56.5, -56.5))
+                .afterTime(1.1, elbow.autonHB())
                 .waitSeconds(2)
                 .afterTime(0, intake.autoOuttake())
                 .waitSeconds(1)

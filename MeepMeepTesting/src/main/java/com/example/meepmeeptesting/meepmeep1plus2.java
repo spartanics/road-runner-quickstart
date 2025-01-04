@@ -17,13 +17,12 @@ public class meepmeep1plus2 {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-14, -61, Math.toRadians(90)))
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-38, -61, Math.toRadians(180)))
                 .splineToLinearHeading(new Pose2d(new Vector2d(-54.5, -54.5), Math.toRadians(225)), Math.toRadians(225))
                 //.afterTime(0, shoulder.autonUpHB())
                 .waitSeconds(1)
                 //.afterTime(0, viper.autonHB())
-                //.afterTime(0.8, elbow.autonHB())
-                .strafeTo(new Vector2d(-56.5, -56.5))
+                //.afterTime(1.1, elbow.autonHB())
                 .waitSeconds(2)
                 //.afterTime(0, intake.autoOuttake())
                 .waitSeconds(1)
@@ -38,13 +37,11 @@ public class meepmeep1plus2 {
                 //one in hb
 
                 //pick sample
-                .splineToLinearHeading(new Pose2d(new Vector2d(-36, -28), Math.toRadians(180)), Math.toRadians(90))
-
-                .strafeTo(new Vector2d(-34, -28))
+                .splineToLinearHeading(new Pose2d(new Vector2d(-33, -29), Math.toRadians(180)), Math.toRadians(90))
                 //.afterTime(0, elbow.autonPick())
                 //.afterTime(0, intake.autoIntake())
                 .waitSeconds(0.5)
-                .strafeTo(new Vector2d(-36, -28))
+                .strafeTo(new Vector2d(-35, -29))
                 .waitSeconds(2)
                 //.afterTime(0, intake.autoStoptake())
                 //.afterTime(0, elbow.autonZero())
@@ -55,8 +52,7 @@ public class meepmeep1plus2 {
                 //.afterTime(0, shoulder.autonUpHB())
                 .waitSeconds(1)
                 //.afterTime(0, viper.autonHB())
-                //.afterTime(0.8, elbow.autonHB())
-                .strafeTo(new Vector2d(-56.5, -56.5))
+                //.afterTime(1.1, elbow.autonHB())
                 .waitSeconds(2)
                 //.afterTime(0, intake.autoOuttake())
                 .waitSeconds(1)
@@ -71,11 +67,11 @@ public class meepmeep1plus2 {
                 //2 in hb
 
                 //pick sample
-                .splineToLinearHeading(new Pose2d(new Vector2d(-48, -28), Math.toRadians(180)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(new Vector2d(-42, -29), Math.toRadians(180)), Math.toRadians(90))
                 //.afterTime(0, elbow.autonPick())
                 //.afterTime(0, intake.autoIntake())
                 .waitSeconds(0.5)
-                .strafeTo(new Vector2d(-50, -28))
+                .strafeTo(new Vector2d(-44, -29))
                 .waitSeconds(2)
                 //.afterTime(0, intake.autoStoptake())
                 //.afterTime(0, elbow.autonZero())
@@ -85,8 +81,7 @@ public class meepmeep1plus2 {
                 //.afterTime(0, shoulder.autonUpHB())
                 .waitSeconds(1)
                 //.afterTime(0, viper.autonHB())
-                //.afterTime(0.8, elbow.autonHB())
-                .strafeTo(new Vector2d(-56.5, -56.5))
+                //.afterTime(1.1, elbow.autonHB())
                 .waitSeconds(2)
                 //.afterTime(0, intake.autoOuttake())
                 .waitSeconds(1)
