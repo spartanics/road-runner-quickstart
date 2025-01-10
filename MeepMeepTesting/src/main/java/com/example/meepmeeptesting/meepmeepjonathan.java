@@ -64,7 +64,7 @@ public class meepmeepjonathan {
 
                 //.afterTime(1, shoulder.autonDown())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(36, -58.5), Math.toRadians(-90)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(new Vector2d(36, -59), Math.toRadians(-90)), Math.toRadians(0))
 
                 //.afterTime(0, claw.autonCloseClaw())
                 .waitSeconds(0.3)
@@ -81,7 +81,7 @@ public class meepmeepjonathan {
 
                 //.afterTime(1, shoulder.autonDown())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(36, -59.5), Math.toRadians(-90)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(new Vector2d(36, -59), Math.toRadians(-90)), Math.toRadians(0))
 
                 //.afterTime(0, claw.autonCloseClaw())
                 .waitSeconds(0.3)

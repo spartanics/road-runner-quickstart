@@ -41,7 +41,7 @@ public class leftAuto extends LinearOpMode {
         startPose = new Pose2d(-38, -61, Math.toRadians(180));
         drive = new MecanumDrive(hardwareMap, startPose);
         TrajectoryActionBuilder build = drive.actionBuilder(startPose)
-                .splineToLinearHeading(new Pose2d(new Vector2d(-54.5, -54.5), Math.toRadians(225)), Math.toRadians(225))
+                .splineToLinearHeading(new Pose2d(new Vector2d(-53.5, -54.5), Math.toRadians(225)), Math.toRadians(225))
                 .afterTime(0, shoulder.autonUpHB())
                 .waitSeconds(1)
                 .afterTime(0, viper.autonHB())
@@ -55,7 +55,7 @@ public class leftAuto extends LinearOpMode {
                 .waitSeconds(1)
                 .afterTime(0, shoulder.autonMidDown())
                 .waitSeconds(0.6)
-                .strafeTo(new Vector2d(-54.5, -54.5))
+                .strafeTo(new Vector2d(-53.5, -54.5))
                 .afterTime(0, shoulder.autonDown())
                 //one in hb
 
@@ -64,14 +64,14 @@ public class leftAuto extends LinearOpMode {
                 .afterTime(0, elbow.autonPick())
                 .afterTime(0, intake.autoIntake())
                 .waitSeconds(0.5)
-                .strafeTo(new Vector2d(-35, -29))
+                .strafeTo(new Vector2d(-34, -29))
                 .waitSeconds(2)
                 .afterTime(0, intake.autoStoptake())
                 .afterTime(0, elbow.autonZero())
                 .waitSeconds(1)
 
 
-                .splineToLinearHeading(new Pose2d(new Vector2d(-54.5, -54.5), Math.toRadians(225)), Math.toRadians(225))
+                .splineToLinearHeading(new Pose2d(new Vector2d(-53.5, -54.5), Math.toRadians(225)), Math.toRadians(225))
                 .afterTime(0, shoulder.autonUpHB())
                 .waitSeconds(1)
                 .afterTime(0, viper.autonHB())
@@ -85,7 +85,7 @@ public class leftAuto extends LinearOpMode {
                 .waitSeconds(1)
                 .afterTime(0, shoulder.autonMidDown())
                 .waitSeconds(0.6)
-                .strafeTo(new Vector2d(-54.5, -54.5))
+                .strafeTo(new Vector2d(-53.5, -54.5))
                 .afterTime(0, shoulder.autonDown())
                 //2 in hb
 
@@ -100,7 +100,7 @@ public class leftAuto extends LinearOpMode {
                 .afterTime(0, elbow.autonZero())
                 .waitSeconds(1)
 
-                .splineToLinearHeading(new Pose2d(new Vector2d(-54.5, -54.5), Math.toRadians(225)), Math.toRadians(225))
+                .splineToLinearHeading(new Pose2d(new Vector2d(-53.5, -54.5), Math.toRadians(225)), Math.toRadians(225))
                 .afterTime(0, shoulder.autonUpHB())
                 .waitSeconds(1)
                 .afterTime(0, viper.autonHB())
@@ -114,7 +114,7 @@ public class leftAuto extends LinearOpMode {
                 .waitSeconds(1)
                 .afterTime(0, shoulder.autonMidDown())
                 .waitSeconds(0.6)
-                .strafeTo(new Vector2d(-54.5, -54.5))
+                .strafeTo(new Vector2d(-53.5, -54.5))
                 .afterTime(0, shoulder.autonDown())
                 //3 in hb
                 ;

@@ -37,11 +37,11 @@ public class meepmeep1plus2 {
                 //one in hb
 
                 //pick sample
-                .splineToLinearHeading(new Pose2d(new Vector2d(-33, -29), Math.toRadians(180)), Math.toRadians(90))
+                .splineToLinearHeading(new Pose2d(new Vector2d(-32, -29), Math.toRadians(180)), Math.toRadians(90))
                 //.afterTime(0, elbow.autonPick())
                 //.afterTime(0, intake.autoIntake())
                 .waitSeconds(0.5)
-                .strafeTo(new Vector2d(-35, -29))
+                .strafeTo(new Vector2d(-34, -29))
                 .waitSeconds(2)
                 //.afterTime(0, intake.autoStoptake())
                 //.afterTime(0, elbow.autonZero())
