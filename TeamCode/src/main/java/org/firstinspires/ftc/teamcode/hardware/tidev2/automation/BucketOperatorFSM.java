@@ -341,7 +341,7 @@ public class BucketOperatorFSM {
                 pos_elbow = elbow.getPosition();
 
                 // stay until the elbow is within threshold
-                if (bucketStateTimer.seconds() > 1
+                if (true || bucketStateTimer.seconds() > 1
                         || ((pos_elbow >= 0 - THRESH_ELBOW)
                         && (pos_elbow <= 0 +THRESH_ELBOW))) {
                     viper.setTarget(0);

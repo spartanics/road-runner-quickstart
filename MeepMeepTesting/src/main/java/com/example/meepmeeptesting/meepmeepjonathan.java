@@ -18,10 +18,11 @@ public class meepmeepjonathan {
                 .build();
 
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(14, -61, Math.toRadians(90)))
+                //.afterTime(0, viper.autonSlightOut())
                 //.afterTime(0, shoulder.autonHC())
-                //.afterTime(0.7, viper.autonHangSpecimen())
+                //.afterTime(0.8, viper.autonHangSpecimen())
                 .strafeTo(new Vector2d(5, -30))
-
+                .waitSeconds(0.3)
                 //put arm up while strafing
                 //stop and place the sample on the bar
                 //.afterTime(0, claw.autonOpenClaw())
@@ -39,11 +40,9 @@ public class meepmeepjonathan {
                 //one in observation zone
                 .strafeTo(new Vector2d(45,-13))
                 .strafeTo(new Vector2d(55,-13))
-                .strafeTo(new Vector2d(43,-59))
-                .waitSeconds(0.1)
+                //.strafeTo(new Vector2d(43,-59))
+                //undo ^ if something goes wrong.
                 .strafeTo(new Vector2d(46,-60))
-
-                //.afterTime(0, viper.autonSlightOut())
 
                 //.afterTime(0, claw.autonCloseClaw())
                 .waitSeconds(0.3)
@@ -64,7 +63,7 @@ public class meepmeepjonathan {
 
                 //.afterTime(1, shoulder.autonDown())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(36, -59), Math.toRadians(-90)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(new Vector2d(36, -58.7), Math.toRadians(-90)), Math.toRadians(0))
 
                 //.afterTime(0, claw.autonCloseClaw())
                 .waitSeconds(0.3)
@@ -81,7 +80,7 @@ public class meepmeepjonathan {
 
                 //.afterTime(1, shoulder.autonDown())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(36, -59), Math.toRadians(-90)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(new Vector2d(36, -58.7), Math.toRadians(-90)), Math.toRadians(0))
 
                 //.afterTime(0, claw.autonCloseClaw())
                 .waitSeconds(0.3)
