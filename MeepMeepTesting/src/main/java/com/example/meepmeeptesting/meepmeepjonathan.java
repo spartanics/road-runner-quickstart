@@ -63,7 +63,7 @@ public class meepmeepjonathan {
 
                 //.afterTime(1, shoulder.autonDown())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(36, -58.7), Math.toRadians(-90)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(new Vector2d(36, -58.7), Math.toRadians(-85)), Math.toRadians(0))
 
                 //.afterTime(0, claw.autonCloseClaw())
                 .waitSeconds(0.3)
@@ -80,7 +80,7 @@ public class meepmeepjonathan {
 
                 //.afterTime(1, shoulder.autonDown())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(36, -58.7), Math.toRadians(-90)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(new Vector2d(36, -58.7), Math.toRadians(-85)), Math.toRadians(0))
 
                 //.afterTime(0, claw.autonCloseClaw())
                 .waitSeconds(0.3)
@@ -89,7 +89,7 @@ public class meepmeepjonathan {
                 //raise arm to clip
                 //.afterTime(1.5, viper.autonHangSpecimen())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(6, -30), Math.toRadians(90)), Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(new Vector2d(6, -30), Math.toRadians(95)), Math.toRadians(90))
 
                 //.afterTime(0, claw.autonOpenClaw())
                 //.afterTime(0, viper.autonSlightOut())

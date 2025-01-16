@@ -46,11 +46,11 @@ public class rightAutoAlt extends LinearOpMode {
                 .afterTime(0, shoulder.autonHC())
                 .afterTime(0.8, viper.autonHangSpecimen())
                 .strafeTo(new Vector2d(5, -30))
-
+                .waitSeconds(0.3)
                 //put arm up while strafing
                 //stop and place the sample on the bar
-                .afterTime(0.2, claw.autonOpenClaw())
-                .afterTime(0.3, viper.autonSlightOut())
+                .afterTime(0, claw.autonOpenClaw())
+                .afterTime(0, viper.autonSlightOut())
 
 
 
@@ -87,7 +87,7 @@ public class rightAutoAlt extends LinearOpMode {
 
                 .afterTime(1, shoulder.autonDown())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(36, -58.7), Math.toRadians(-90)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(new Vector2d(36, -58.7), Math.toRadians(-85)), Math.toRadians(0))
 
                 .afterTime(0, claw.autonCloseClaw())
                 .waitSeconds(0.3)
@@ -104,7 +104,7 @@ public class rightAutoAlt extends LinearOpMode {
 
                 .afterTime(1, shoulder.autonDown())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(36, -58.7), Math.toRadians(-90)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(new Vector2d(36, -58.7), Math.toRadians(-85)), Math.toRadians(0))
 
                 .afterTime(0, claw.autonCloseClaw())
                 .waitSeconds(0.3)
@@ -113,7 +113,7 @@ public class rightAutoAlt extends LinearOpMode {
                 //raise arm to clip
                 .afterTime(1.5, viper.autonHangSpecimen())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(6, -30), Math.toRadians(90)), Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(new Vector2d(6, -30), Math.toRadians(95)), Math.toRadians(90))
 
                 .afterTime(0, claw.autonOpenClaw())
                 .afterTime(0, viper.autonSlightOut())
