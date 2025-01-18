@@ -44,7 +44,7 @@ public class rightAutoAlt extends LinearOpMode {
         TrajectoryActionBuilder build = drive.actionBuilder(startPose)
                 .afterTime(0, viper.autonSlightOut())
                 .afterTime(0, shoulder.autonHC())
-                .afterTime(0.8, viper.autonHangSpecimen())
+                .afterTime(0.75, viper.autonHangSpecimen())
                 .strafeTo(new Vector2d(5, -30))
                 .waitSeconds(0.3)
                 //put arm up while strafing
@@ -75,7 +75,7 @@ public class rightAutoAlt extends LinearOpMode {
                 //raise arm to clip
                 .afterTime(1.4, viper.autonHangSpecimen())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(7, -30), Math.toRadians(90)), Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(new Vector2d(7, -31.2), Math.toRadians(90)), Math.toRadians(90))
 
 
                 //clip, routing to push final sample and grab specimen
@@ -87,7 +87,7 @@ public class rightAutoAlt extends LinearOpMode {
 
                 .afterTime(1, shoulder.autonDown())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(36, -58.7), Math.toRadians(-85)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(new Vector2d(36, -60), Math.toRadians(-80)), Math.toRadians(0))
 
                 .afterTime(0, claw.autonCloseClaw())
                 .waitSeconds(0.3)
@@ -96,7 +96,7 @@ public class rightAutoAlt extends LinearOpMode {
                 //raise arm to clip
                 .afterTime(1.5, viper.autonHangSpecimen())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(4, -30), Math.toRadians(90)), Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(new Vector2d(4, -31.2), Math.toRadians(90)), Math.toRadians(90))
 
                 .afterTime(0, claw.autonOpenClaw())
                 .afterTime(0, viper.autonSlightOut())
@@ -104,7 +104,7 @@ public class rightAutoAlt extends LinearOpMode {
 
                 .afterTime(1, shoulder.autonDown())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(36, -58.7), Math.toRadians(-85)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(new Vector2d(36, -60), Math.toRadians(-80)), Math.toRadians(0))
 
                 .afterTime(0, claw.autonCloseClaw())
                 .waitSeconds(0.3)
@@ -113,7 +113,7 @@ public class rightAutoAlt extends LinearOpMode {
                 //raise arm to clip
                 .afterTime(1.5, viper.autonHangSpecimen())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(6, -30), Math.toRadians(95)), Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(new Vector2d(6, -31.2), Math.toRadians(90)), Math.toRadians(90))
 
                 .afterTime(0, claw.autonOpenClaw())
                 .afterTime(0, viper.autonSlightOut())

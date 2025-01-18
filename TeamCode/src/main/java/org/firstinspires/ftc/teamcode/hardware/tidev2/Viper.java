@@ -131,7 +131,7 @@ public class Viper {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            setTarget(40);
+            setTarget(50);
             return false;
         }
     }
@@ -204,10 +204,10 @@ public class Viper {
         }
 
         // move viper according to the left stick y
-        if (Math.toRadians(shoulderDeg) == 90 || fromInches(Math.abs(14 / (Math.cos(Math.toRadians(shoulderDeg))))) > 5800) {
-            max = 5800;
+        if (Math.toRadians(shoulderDeg) == 90 || fromInches(Math.abs(13 / (Math.cos(Math.toRadians(shoulderDeg))))) > 3900) {
+            max = 3900;
         } else {
-            max = fromInches(Math.abs(14 / (Math.cos(Math.toRadians(shoulderDeg)))));
+            max = fromInches(Math.abs(13 / (Math.cos(Math.toRadians(shoulderDeg)))));
         }
 
 
