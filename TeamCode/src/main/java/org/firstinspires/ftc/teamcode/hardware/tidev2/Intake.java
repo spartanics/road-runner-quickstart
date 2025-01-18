@@ -35,6 +35,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Intake {
@@ -61,7 +62,7 @@ public class Intake {
     public void init() {
         // Define and Initialize Motors (note: need to use reference to actual OpMode).
         intake = myOpMode.hardwareMap.get(CRServo.class, "intake");
-
+        intake.setDirection(DcMotorSimple.Direction.REVERSE);
 
     }
 

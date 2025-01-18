@@ -38,63 +38,84 @@ public class leftAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        startPose = new Pose2d(-14, -61, Math.toRadians(90));
+        startPose = new Pose2d(-38, -61, Math.toRadians(180));
         drive = new MecanumDrive(hardwareMap, startPose);
         TrajectoryActionBuilder build = drive.actionBuilder(startPose)
-                
-                .afterTime(0, shoulder.autonHC())
-                .strafeTo(new Vector2d(-5, -33))
-
-                //put arm up while strafing
-                //stop at (9, -33) and place the sample on the bar
-                .afterTime(0, viper.autonHangSpecimen())
-                .waitSeconds(1.0)
-                .strafeTo(new Vector2d(-5, -31))
-                .afterTime(0, claw.autonOpenClaw())
-                .afterTime(0, viper.autonDown())
-                .waitSeconds(0.5)
-
-                .strafeTo(new Vector2d(-10,-40))
-                .waitSeconds(1)
-                .afterTime(0, shoulder.autonMidDown())
-                .waitSeconds(0.3)
-                .afterTime(0, shoulder.autonDown())
-                .strafeTo(new Vector2d(-30,-40))
-                .splineToLinearHeading(new Pose2d(new Vector2d(-36, -28), Math.toRadians(180)), Math.toRadians(0))
-                .strafeTo(new Vector2d(-34, -28))
-                //pick sample
-                .waitSeconds(0.5)
-                .afterTime(0, elbow.autonPick())
-                .waitSeconds(2)
                 .afterTime(0, intake.autoIntake())
-                .waitSeconds(1)
-                .strafeTo(new Vector2d(-42, -28))
-                .waitSeconds(2)
-                .afterTime(0, intake.autoStoptake())
-                .afterTime(0, elbow.autonZero())
-                .waitSeconds(1)
-                .strafeTo(new Vector2d(-38, -34))
-                .splineToLinearHeading(new Pose2d(new Vector2d(-54.5, -54.5), Math.toRadians(225)), Math.toRadians(-90))
-                .waitSeconds(1)
+                .splineToLinearHeading(new Pose2d(new Vector2d(-54.5, -54.5), Math.toRadians(225)), Math.toRadians(225))
                 .afterTime(0, shoulder.autonUpHB())
-                .waitSeconds(1.5)
+                .waitSeconds(1)
                 .afterTime(0, viper.autonHB())
-                .afterTime(0, elbow.autonHB())
-                .strafeTo(new Vector2d(-56.5, -56.5))
+                .afterTime(1.1, elbow.autonHB())
                 .waitSeconds(2)
                 .afterTime(0, intake.autoOuttake())
-                .waitSeconds(2)
+                .waitSeconds(1)
                 .afterTime(0, intake.autoStoptake())
                 .afterTime(0, elbow.autonZero())
                 .afterTime(0, viper.autonDown())
                 .waitSeconds(1)
                 .afterTime(0, shoulder.autonMidDown())
-                .waitSeconds(0.6)
+
                 .strafeTo(new Vector2d(-54.5, -54.5))
-                .waitSeconds(0.5)
                 .afterTime(0, shoulder.autonDown())
-                .waitSeconds(0.2)
-                .strafeTo(new Vector2d(-56, -56))
+                //one in hb
+
+                //pick sample
+                .splineToLinearHeading(new Pose2d(new Vector2d(-48, -46), Math.toRadians(90)), Math.toRadians(90))
+                .afterTime(0, elbow.autonPick())
+                .afterTime(0, intake.autoIntake())
+                .waitSeconds(0.5)
+                .strafeTo(new Vector2d(-48, -44))
+                .waitSeconds(2)
+                .afterTime(0, intake.autoStoptake())
+                .afterTime(0, elbow.autonZero())
+                .waitSeconds(1)
+
+
+                .splineToLinearHeading(new Pose2d(new Vector2d(-54.5, -54.5), Math.toRadians(225)), Math.toRadians(225))
+                .afterTime(0, shoulder.autonUpHB())
+                .waitSeconds(1)
+                .afterTime(0, viper.autonHB())
+                .afterTime(1.1, elbow.autonHB())
+                .waitSeconds(2)
+                .afterTime(0, intake.autoOuttake())
+                .waitSeconds(1)
+                .afterTime(0, intake.autoStoptake())
+                .afterTime(0, elbow.autonZero())
+                .afterTime(0, viper.autonDown())
+                .waitSeconds(1)
+                .afterTime(0, shoulder.autonMidDown())
+                .strafeTo(new Vector2d(-54.5, -54.5))
+                .afterTime(0, shoulder.autonDown())
+                //2 in hb
+
+                //pick sample
+                .splineToLinearHeading(new Pose2d(new Vector2d(-42, -29), Math.toRadians(180)), Math.toRadians(90))
+                .afterTime(0, elbow.autonPick())
+                .afterTime(0, intake.autoIntake())
+                .waitSeconds(0.5)
+                .strafeTo(new Vector2d(-44, -29))
+                .waitSeconds(2)
+                .afterTime(0, intake.autoStoptake())
+                .afterTime(0, elbow.autonZero())
+                .waitSeconds(1)
+
+                .splineToLinearHeading(new Pose2d(new Vector2d(-54.5, -54.5), Math.toRadians(225)), Math.toRadians(225))
+                .afterTime(0, shoulder.autonUpHB())
+                .waitSeconds(1)
+                .afterTime(0, viper.autonHB())
+                .afterTime(1.1, elbow.autonHB())
+                .waitSeconds(2)
+                .afterTime(0, intake.autoOuttake())
+                .waitSeconds(1)
+                .afterTime(0, intake.autoStoptake())
+                .afterTime(0, elbow.autonZero())
+                .afterTime(0, viper.autonDown())
+                .waitSeconds(1)
+                .afterTime(0, shoulder.autonMidDown())
+                .strafeTo(new Vector2d(-54.5, -54.5))
+                .afterTime(0, shoulder.autonDown())
+                //3 in hb
                 ;
 
         shoulder.init();
@@ -104,13 +125,7 @@ public class leftAuto extends LinearOpMode {
         claw.init();
 
         while (!isStopRequested() && !opModeIsActive()) {
-            Actions.runBlocking(new SequentialAction(
-                    new InstantAction(() -> shoulder.autonListen()),
-                    new InstantAction(() -> viper.autonListen()),
-                    new InstantAction(() -> elbow.autonListen()),
-                    new InstantAction(() -> intake.autonListen()),
-                    new InstantAction(() -> claw.autonListen())
-            ));
+            viper.listen();
 
         }
 
