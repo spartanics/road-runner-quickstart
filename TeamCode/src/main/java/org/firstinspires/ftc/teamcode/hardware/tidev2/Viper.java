@@ -231,7 +231,7 @@ public class Viper {
 
         // move viper according to the left stick y
         if (Math.toRadians(shoulderDeg) == 90 || fromInches(Math.abs(13 / (Math.cos(Math.toRadians(shoulderDeg))))) > 3900) {
-            max = 3900;
+            max = 5000;
         } else {
             max = fromInches(Math.abs(13 / (Math.cos(Math.toRadians(shoulderDeg)))));
         }
