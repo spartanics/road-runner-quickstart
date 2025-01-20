@@ -189,6 +189,10 @@ public class Viper {
         myOpMode.telemetry.addData("Viper Max: ", max);
     }
 
+    public void manualSetPower(double pow) {
+        viper.setPower(pow);
+    }
+
     public void listen_simple() {
         pidf = -myOpMode.gamepad2.left_stick_y;
         if (pidf != 0.0) {

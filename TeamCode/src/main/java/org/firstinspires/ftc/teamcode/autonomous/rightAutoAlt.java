@@ -10,6 +10,8 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.hardware.tidev2.Claw;
@@ -42,15 +44,14 @@ public class rightAutoAlt extends LinearOpMode {
         startPose = new Pose2d(14, -61, Math.toRadians(90));
         drive = new MecanumDrive(hardwareMap, startPose);
         TrajectoryActionBuilder build = drive.actionBuilder(startPose)
-                .afterTime(0, viper.autonSlightOut())
                 .afterTime(0, shoulder.autonHC())
-                .afterTime(0.8, viper.autonHangSpecimen())
+                .afterTime(0.7, viper.autonHangSpecimen())
                 .strafeTo(new Vector2d(5, -30))
 
                 //put arm up while strafing
                 //stop and place the sample on the bar
-                .afterTime(0.2, claw.autonOpenClaw())
-                .afterTime(0.3, viper.autonSlightOut())
+                .afterTime(1, claw.autonOpenClaw())
+                .afterTime(1, viper.autonSlightOut())
 
 
 
@@ -130,8 +131,11 @@ public class rightAutoAlt extends LinearOpMode {
         intake.init();
         viper.init();
         claw.init();
+        ElapsedTime timer = new ElapsedTime();
+        boolean inited = false;
 
         while (!isStopRequested() && !opModeIsActive()) {
+
             Actions.runBlocking(new SequentialAction(
                     new InstantAction(() -> shoulder.autonListen()),
                     new InstantAction(() -> viper.autonListen()),
@@ -139,7 +143,17 @@ public class rightAutoAlt extends LinearOpMode {
                     new InstantAction(() -> intake.autonListen()),
                     new InstantAction(() -> claw.autonListen())
             ));
-            viper.listen();
+
+            if (timer.seconds() < 4) {
+                viper.manualSetPower(-0.6);
+            }else if (inited == true) {
+                viper.listen();
+            } else {
+                viper.init();
+                shoulder.setTarget(70);
+                viper.setTarget(40);
+                inited = true;
+            }
 
         }
 
