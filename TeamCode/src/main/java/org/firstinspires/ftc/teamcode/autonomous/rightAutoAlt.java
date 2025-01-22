@@ -1,10 +1,6 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
-import androidx.annotation.NonNull;
-
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
-import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.InstantAction;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
@@ -14,7 +10,6 @@ import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
@@ -28,6 +23,14 @@ import org.firstinspires.ftc.teamcode.hardware.tidev2.Viper;
 @Config
 @Autonomous(name = "4 clip Robotnik Style", group = "Autonomous")
 public class rightAutoAlt extends LinearOpMode {
+    final double POSX_FARTHEST = 35;
+    final double POSY_WALL = -60;
+    final double POSX_COLLECT = 45;
+    final double POSX_BAR = 5;
+    final double POSY_BAR = -35;
+    final int POS_SHOULDER_HANG = 475;
+    final double TS_WAIT_TO_GRAB_SAMPLE = 0.1;
+
     Pose2d startPose;
     MecanumDrive drive;
 
@@ -49,23 +52,25 @@ public class rightAutoAlt extends LinearOpMode {
         TrajectoryActionBuilder build = drive.actionBuilder(startPose)
                 //put arm up while strafing
                 //stop and place the sample on the bar
-                .afterTime(0, shoulder.autonHC())
-                .afterTime(0.7, viper.autonHangSpecimen())
-                .strafeTo(new Vector2d(5, -28))
+                .afterTime(0, shoulder.autonSetShoulderTarget(POS_SHOULDER_HANG))
+                .afterTime(0.1, viper.autonHangSpecimen())
+                .strafeTo(new Vector2d(POSX_BAR, POSY_BAR))
 
                 // STEP: post-hang
-                .afterTime(0, shoulder.autonSlightDown())
                 .afterTime(0.1, claw.autonOpenClaw())
+//                .afterTime(0, shoulder.autonSetShoulderTarget(420))
                 .afterTime(0.1, viper.autonSlightOut())
+                .waitSeconds(.3)
 
+                .afterTime(0.5, shoulder.autonDown())
 
                 // STEP: go collect one sample to observation zone
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(26,-43), Math.toRadians(-90)), 0)
-                .afterTime(0, shoulder.autonDown())
+                .splineToSplineHeading(new Pose2d(new Vector2d(20,POSY_BAR-10),
+                        Math.toRadians(-90)), 0)
 
-                .splineTo(new Vector2d(45, -13), 0)
-                .strafeTo(new Vector2d(45,-53))
+                .splineTo(new Vector2d(POSX_COLLECT, -13), 0)
+                .strafeTo(new Vector2d(POSX_COLLECT,POSY_WALL+10))
                 //one in observation zone
 
                 // STEP: go collect another sample to observation zone
@@ -73,63 +78,81 @@ public class rightAutoAlt extends LinearOpMode {
                 .strafeTo(new Vector2d(55,-13))
                 //.strafeTo(new Vector2d(43,-59))
                 //undo ^ if something goes wrong.
-                .strafeTo(new Vector2d(46,-60))
+                .strafeTo(new Vector2d(44, POSY_WALL))
 
                 //TODO: to continue tuning here
 
+                // STEP: collect specimen and hang
                 .afterTime(0, claw.autonCloseClaw())
-                .waitSeconds(0.3)
-                .afterTime(0, shoulder.autonHC())
+                .waitSeconds(0.25)
+
+                .afterTime(0.1, shoulder.autonSetShoulderTarget(POS_SHOULDER_HANG))
                 //grab sample, routing towards chamber.
                 //raise arm to clip
-                .afterTime(1.4, viper.autonHangSpecimen())
+                .afterTime(0.5, viper.autonHangSpecimen())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(7, -30), Math.toRadians(90)), Math.toRadians(90))
 
+                // TODO: to experiment here on approaching the bar in a more direct way
+                .splineToSplineHeading(new Pose2d(new Vector2d(POSX_BAR+2, POSY_BAR),
+                        Math.toRadians(90)), Math.toRadians(90))
 
+                // STEP: going back to pick up sample to hang
                 //clip, routing to push final sample and grab specimen
 
-                .afterTime(0, claw.autonOpenClaw())
+                // STEP: post-hang
+                .afterTime(0.1, claw.autonOpenClaw())
+//                .afterTime(0, shoulder.autonSetShoulderTarget(420))
                 .afterTime(0.1, viper.autonSlightOut())
+                .waitSeconds(.3)
 
 
-
-                .afterTime(1, shoulder.autonDown())
+                // STEP: pick another sample to hang
+                .afterTime(0.5, shoulder.autonDown())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(35, -59.5), Math.toRadians(-80)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(new Vector2d(POSX_FARTHEST, POSY_WALL),
+                        Math.toRadians(-80)), Math.toRadians(0))
 
                 .afterTime(0, claw.autonCloseClaw())
-                .waitSeconds(0.3)
-                .afterTime(0, shoulder.autonHC())
-                //grab sample, routing towards chamber.
-                //raise arm to clip
-                .afterTime(1.5, viper.autonHangSpecimen())
+                .waitSeconds(0.25)
+
+                // STEP: go to the bar to hang sample
+                .afterTime(0.1, shoulder.autonSetShoulderTarget(POS_SHOULDER_HANG))
+                .afterTime(0.5, viper.autonHangSpecimen())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(4, -30), Math.toRadians(90)), Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(new Vector2d(POSX_BAR-2, POSY_BAR),
+                        Math.toRadians(90)), Math.toRadians(90))
 
-                .afterTime(0, claw.autonOpenClaw())
-                .afterTime(0, viper.autonSlightOut())
+                // STEP: post-hang
+                .afterTime(0.1, claw.autonOpenClaw())
+//                .afterTime(0, shoulder.autonSetShoulderTarget(420))
+                .afterTime(0.1, viper.autonSlightOut())
+                .waitSeconds(.3)
 
-
-                .afterTime(1, shoulder.autonDown())
+                // STEP: pick another sample to hang
+                .afterTime(0.5, shoulder.autonDown())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(35, -59.5), Math.toRadians(-80)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(new Vector2d(POSX_FARTHEST, POSY_WALL),
+                        Math.toRadians(-80)), Math.toRadians(0))
 
                 .afterTime(0, claw.autonCloseClaw())
-                .waitSeconds(0.3)
-                .afterTime(0, shoulder.autonHC())
-                //grab sample, routing towards chamber.
-                //raise arm to clip
-                .afterTime(1.5, viper.autonHangSpecimen())
-                .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(6, -30), Math.toRadians(90)), Math.toRadians(90))
+                .waitSeconds(0.25)
 
-                .afterTime(0, claw.autonOpenClaw())
-                .afterTime(0, viper.autonSlightOut())
-                .waitSeconds(0.5)
-
+                // STEP: go to the bar to hang sample
+                .afterTime(0.1, shoulder.autonSetShoulderTarget(POS_SHOULDER_HANG))
+                .afterTime(0.5, viper.autonHangSpecimen())
                 .setReversed(true)
-                .splineTo(new Vector2d(50,-60), Math.toRadians(-90))
+                .splineToSplineHeading(new Pose2d(new Vector2d(POSX_BAR+1, POSY_BAR),
+                        Math.toRadians(90)), Math.toRadians(90))
+
+                // STEP: post-hang
+                .afterTime(0.1, claw.autonOpenClaw())
+//                .afterTime(0, shoulder.autonSetShoulderTarget(420))
+                .afterTime(0.1, viper.autonSlightOut())
+                .waitSeconds(.3)
+
+                // STEP: go back to park
+                .setReversed(true)
+                .splineTo(new Vector2d(POSX_FARTHEST,POSY_WALL), Math.toRadians(-90))
                 .afterTime(0, shoulder.autonDown())
 
                 ;
