@@ -144,7 +144,7 @@ public class Viper {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            setTarget(2200);
+            setTarget(3000);
             return false;
         }
     }
