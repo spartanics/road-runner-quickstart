@@ -53,7 +53,7 @@ public class Viper {
 
     private PIDFController controller;
 
-    public static double p = 0.001, i = 0, d = 0;
+    public static double p = 0.001, i = 0.01, d = 0.0;
     public static double f = 0;
 
     public static int target = 0;
@@ -144,7 +144,7 @@ public class Viper {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            setTarget(2000);
+            setTarget(2200);
             return false;
         }
     }
@@ -179,11 +179,14 @@ public class Viper {
         pidf = controller.calculate(armPos, target);
 
         viper.setPower(pidf);
-        viper.setPower(pidf);
+
+        sendTelemetry();
+        myOpMode.telemetry.update();
+
     }
 
     public void sendTelemetry() {
-        myOpMode.telemetry.addData("Viper Position:", vipPos);
+        myOpMode.telemetry.addData("Viper Position:", viper.getCurrentPosition());
         myOpMode.telemetry.addData("Power:", pidf);
         myOpMode.telemetry.addData("Target Position:", target);
         myOpMode.telemetry.addData("Viper Max: ", max);
