@@ -1,6 +1,10 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
+import androidx.annotation.NonNull;
+
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.InstantAction;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
@@ -32,9 +36,6 @@ public class rightAutoAlt extends LinearOpMode {
     Intake intake = new Intake(this);
     Viper viper = new Viper(this);
     Claw claw = new Claw(this);
-    
-    
-
 
 
 
@@ -43,31 +44,38 @@ public class rightAutoAlt extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         startPose = new Pose2d(14, -61, Math.toRadians(90));
         drive = new MecanumDrive(hardwareMap, startPose);
-        TrajectoryActionBuilder build = drive.actionBuilder(startPose)
-                .afterTime(0, shoulder.autonHC())
-                .afterTime(0.7, viper.autonHangSpecimen())
-                .strafeTo(new Vector2d(5, -30))
 
+
+        TrajectoryActionBuilder build = drive.actionBuilder(startPose)
                 //put arm up while strafing
                 //stop and place the sample on the bar
-                .afterTime(1, claw.autonOpenClaw())
-                .afterTime(1, viper.autonSlightOut())
+                .afterTime(0, shoulder.autonHC())
+                .afterTime(0.7, viper.autonHangSpecimen())
+                .strafeTo(new Vector2d(5, -28))
+
+                // STEP: post-hang
+                .afterTime(0, shoulder.autonSlightDown())
+                .afterTime(0.1, claw.autonOpenClaw())
+                .afterTime(0.1, viper.autonSlightOut())
 
 
-
+                // STEP: go collect one sample to observation zone
                 .setReversed(true)
                 .splineToSplineHeading(new Pose2d(new Vector2d(26,-43), Math.toRadians(-90)), 0)
                 .afterTime(0, shoulder.autonDown())
 
                 .splineTo(new Vector2d(45, -13), 0)
-
                 .strafeTo(new Vector2d(45,-53))
                 //one in observation zone
+
+                // STEP: go collect another sample to observation zone
                 .strafeTo(new Vector2d(45,-13))
                 .strafeTo(new Vector2d(55,-13))
                 //.strafeTo(new Vector2d(43,-59))
                 //undo ^ if something goes wrong.
                 .strafeTo(new Vector2d(46,-60))
+
+                //TODO: to continue tuning here
 
                 .afterTime(0, claw.autonCloseClaw())
                 .waitSeconds(0.3)
@@ -155,6 +163,7 @@ public class rightAutoAlt extends LinearOpMode {
                 inited = true;
             }
 
+
         }
 
 
@@ -169,6 +178,8 @@ public class rightAutoAlt extends LinearOpMode {
                 elbow.autonListen(),
                 intake.autonListen(),
                 claw.autonListen(),
+
+
                 build.build()
         ));
         PoseStorage.storedPose = drive.pose;
