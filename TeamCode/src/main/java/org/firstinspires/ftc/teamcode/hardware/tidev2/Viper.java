@@ -127,6 +127,22 @@ public class Viper {
         return new AutonHB();
     }
 
+    public class AutonTargetSetter implements Action {
+        private int autonTarget = 0;
+        public AutonTargetSetter(int t) {
+            this.autonTarget = t;
+        }
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            setTarget(autonTarget);
+            return false;
+        }
+    }
+
+    public Action autonSetViperTarget(int t) {
+        return new AutonTargetSetter(t);
+    }
+
     public class AutonSlightOut implements Action {
 
         @Override
