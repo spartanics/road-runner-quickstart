@@ -28,7 +28,8 @@ public class rightAutoAlt extends LinearOpMode {
     final double POSX_COLLECT = 45;
     final double POSX_BAR = 5;
     final double POSY_BAR = -35;
-    final int POS_SHOULDER_HANG = 475;
+    final int POS_SHOULDER_HANG = 480;
+    final int POS_VIPER_HANG = 3300;
     final double TS_WAIT_TO_GRAB_SAMPLE = 0.1;
 
     Pose2d startPose;
@@ -41,27 +42,24 @@ public class rightAutoAlt extends LinearOpMode {
     Claw claw = new Claw(this);
 
 
-
-
-    @Override
-    public void runOpMode() throws InterruptedException {
-        startPose = new Pose2d(14, -61, Math.toRadians(90));
-        drive = new MecanumDrive(hardwareMap, startPose);
-
-
-        TrajectoryActionBuilder build = drive.actionBuilder(startPose)
-                //put arm up while strafing
-                //stop and place the sample on the bar
-                .afterTime(0, shoulder.autonSetShoulderTarget(POS_SHOULDER_HANG))
-                .afterTime(0.1, viper.autonHangSpecimen())
-                .strafeTo(new Vector2d(POSX_BAR, POSY_BAR))
-
+    public TrajectoryActionBuilder doPostHang(TrajectoryActionBuilder t) {
+        return t
                 // STEP: post-hang
-                .afterTime(0.1, claw.autonOpenClaw())
+                .afterTime(0.0, claw.autonOpenClaw())
 //                .afterTime(0, shoulder.autonSetShoulderTarget(420))
-                .afterTime(0.1, viper.autonSlightOut())
-                .waitSeconds(.3)
+                .afterTime(0.05, viper.autonSlightOut())
+                .waitSeconds(.2);
+    }
 
+    public TrajectoryActionBuilder doGoHang(TrajectoryActionBuilder t) {
+        return t
+                .afterTime(0, shoulder.autonSetShoulderTarget(POS_SHOULDER_HANG))
+                .afterTime(0.1, viper.autonSetViperTarget(POS_VIPER_HANG))
+                .strafeTo(new Vector2d(POSX_BAR, POSY_BAR));
+    }
+
+    public TrajectoryActionBuilder doCollectFirstSampleToObservationZone(TrajectoryActionBuilder t) {
+        return t
                 .afterTime(0.5, shoulder.autonDown())
 
                 // STEP: go collect one sample to observation zone
@@ -70,98 +68,87 @@ public class rightAutoAlt extends LinearOpMode {
                         Math.toRadians(-90)), 0)
 
                 .splineTo(new Vector2d(POSX_COLLECT, -13), 0)
-                .strafeTo(new Vector2d(POSX_COLLECT,POSY_WALL+10))
-                //one in observation zone
+                .strafeTo(new Vector2d(POSX_COLLECT,POSY_WALL+10));
+        //one in observation zone;
+    }
 
+    public TrajectoryActionBuilder doCollectSecondSampleToObservationZone(TrajectoryActionBuilder t) {
+        return t
                 // STEP: go collect another sample to observation zone
-                .strafeTo(new Vector2d(45,-13))
-                .strafeTo(new Vector2d(55,-13))
+                .strafeTo(new Vector2d(POSX_COLLECT, -13))
+                .strafeTo(new Vector2d(POSX_COLLECT+10, -13))
                 //.strafeTo(new Vector2d(43,-59))
                 //undo ^ if something goes wrong.
-                .strafeTo(new Vector2d(44, POSY_WALL))
+                .strafeTo(new Vector2d(POSX_COLLECT - 1, POSY_WALL));
+    }
 
-                //TODO: to continue tuning here
-
+    public TrajectoryActionBuilder doClipSampleAndHang(TrajectoryActionBuilder t, int offset_x) {
+        return t
                 // STEP: collect specimen and hang
                 .afterTime(0, claw.autonCloseClaw())
                 .waitSeconds(0.25)
 
                 .afterTime(0.1, shoulder.autonSetShoulderTarget(POS_SHOULDER_HANG))
-                //grab sample, routing towards chamber.
-                //raise arm to clip
-                .afterTime(0.5, viper.autonHangSpecimen())
+                .afterTime(0.5, viper.autonSetViperTarget(POS_VIPER_HANG))
                 .setReversed(true)
 
                 // TODO: to experiment here on approaching the bar in a more direct way
-                .splineToSplineHeading(new Pose2d(new Vector2d(POSX_BAR+2, POSY_BAR),
-                        Math.toRadians(90)), Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(new Vector2d(POSX_BAR+offset_x, POSY_BAR),
+                        Math.toRadians(90)), Math.toRadians(90));
+    }
 
-                // STEP: going back to pick up sample to hang
-                //clip, routing to push final sample and grab specimen
-
-                // STEP: post-hang
-                .afterTime(0.1, claw.autonOpenClaw())
-//                .afterTime(0, shoulder.autonSetShoulderTarget(420))
-                .afterTime(0.1, viper.autonSlightOut())
-                .waitSeconds(.3)
-
-
+    public TrajectoryActionBuilder doGoObsZoneToClipSample(TrajectoryActionBuilder t) {
+        return t
                 // STEP: pick another sample to hang
                 .afterTime(0.5, shoulder.autonDown())
                 .setReversed(true)
                 .splineToSplineHeading(new Pose2d(new Vector2d(POSX_FARTHEST, POSY_WALL),
-                        Math.toRadians(-80)), Math.toRadians(0))
+                        Math.toRadians(-75)), Math.toRadians(0));
+    }
 
-                .afterTime(0, claw.autonCloseClaw())
-                .waitSeconds(0.25)
-
-                // STEP: go to the bar to hang sample
-                .afterTime(0.1, shoulder.autonSetShoulderTarget(POS_SHOULDER_HANG))
-                .afterTime(0.5, viper.autonHangSpecimen())
-                .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(POSX_BAR-2, POSY_BAR),
-                        Math.toRadians(90)), Math.toRadians(90))
-
-                // STEP: post-hang
-                .afterTime(0.1, claw.autonOpenClaw())
-//                .afterTime(0, shoulder.autonSetShoulderTarget(420))
-                .afterTime(0.1, viper.autonSlightOut())
-                .waitSeconds(.3)
-
-                // STEP: pick another sample to hang
-                .afterTime(0.5, shoulder.autonDown())
-                .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(POSX_FARTHEST, POSY_WALL),
-                        Math.toRadians(-80)), Math.toRadians(0))
-
-                .afterTime(0, claw.autonCloseClaw())
-                .waitSeconds(0.25)
-
-                // STEP: go to the bar to hang sample
-                .afterTime(0.1, shoulder.autonSetShoulderTarget(POS_SHOULDER_HANG))
-                .afterTime(0.5, viper.autonHangSpecimen())
-                .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(POSX_BAR+1, POSY_BAR),
-                        Math.toRadians(90)), Math.toRadians(90))
-
-                // STEP: post-hang
-                .afterTime(0.1, claw.autonOpenClaw())
-//                .afterTime(0, shoulder.autonSetShoulderTarget(420))
-                .afterTime(0.1, viper.autonSlightOut())
-                .waitSeconds(.3)
-
+    public TrajectoryActionBuilder doPark(TrajectoryActionBuilder t) {
+        return t
                 // STEP: go back to park
                 .setReversed(true)
                 .splineTo(new Vector2d(POSX_FARTHEST,POSY_WALL), Math.toRadians(-90))
-                .afterTime(0, shoulder.autonDown())
+                .afterTime(0, shoulder.autonDown());
+    }
 
-                ;
+
+    @Override
+    public void runOpMode() throws InterruptedException {
+        startPose = new Pose2d(14, -61, Math.toRadians(90));
+        drive = new MecanumDrive(hardwareMap, startPose);
+
+
+        TrajectoryActionBuilder builder = drive.actionBuilder(startPose);
+
+        builder = doGoHang(builder);
+        builder = doPostHang(builder);
+        builder = doCollectFirstSampleToObservationZone(builder);
+
+        // one in observation zone
+        builder = doCollectSecondSampleToObservationZone(builder);
+        builder = doClipSampleAndHang(builder, 2);
+        builder = doPostHang(builder);
+
+        builder = doGoObsZoneToClipSample(builder);
+        builder = doClipSampleAndHang(builder, -2);
+        builder = doPostHang(builder);
+
+        builder = doGoObsZoneToClipSample(builder);
+        builder = doClipSampleAndHang(builder, -1);
+        builder = doPostHang(builder);
+
+        builder = doPark(builder);
 
         shoulder.init();
         elbow.init();
         intake.init();
         viper.init();
         claw.init();
+
+
         ElapsedTime timer = new ElapsedTime();
         boolean inited = false;
 
@@ -181,16 +168,13 @@ public class rightAutoAlt extends LinearOpMode {
                 viper.listen();
             } else {
                 viper.init();
+                shoulder.init();
+
                 shoulder.setTarget(70);
                 viper.setTarget(40);
                 inited = true;
             }
-
-
         }
-
-
-
 
 
         waitForStart();
@@ -202,8 +186,7 @@ public class rightAutoAlt extends LinearOpMode {
                 intake.autonListen(),
                 claw.autonListen(),
 
-
-                build.build()
+                builder.build()
         ));
         PoseStorage.storedPose = drive.pose;
     }
