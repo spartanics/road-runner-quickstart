@@ -52,7 +52,7 @@ public class Shoulder {
     private PIDFController controller_down;
 
 
-    public static final double p_up = 0.01, p_down = 0.003, i = 0.1, d_up = 0.0004, d_down = 0.0001;
+    public static final double p_up = 0.01, p_down = 0.003, i = 0.1, d_up = 0.0001, d_down = 0.0001;
     public static final double f = 0.00003;
 
     public static int target = 100;
