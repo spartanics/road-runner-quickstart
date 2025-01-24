@@ -53,7 +53,7 @@ public class Viper {
 
     private PIDFController controller;
 
-    public static double p = 0.001, i = 0, d = 0;
+    public static double p = 0.001, i = 0.01, d = 0.0;
     public static double f = 0;
 
     public static int target = 0;
@@ -127,6 +127,22 @@ public class Viper {
         return new AutonHB();
     }
 
+    public class AutonTargetSetter implements Action {
+        private int autonTarget = 0;
+        public AutonTargetSetter(int t) {
+            this.autonTarget = t;
+        }
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            setTarget(autonTarget);
+            return false;
+        }
+    }
+
+    public Action autonSetViperTarget(int t) {
+        return new AutonTargetSetter(t);
+    }
+
     public class AutonSlightOut implements Action {
 
         @Override
@@ -144,7 +160,7 @@ public class Viper {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            setTarget(2000);
+            setTarget(3000);
             return false;
         }
     }
@@ -179,14 +195,21 @@ public class Viper {
         pidf = controller.calculate(armPos, target);
 
         viper.setPower(pidf);
-        viper.setPower(pidf);
+
+        sendTelemetry();
+        myOpMode.telemetry.update();
+
     }
 
     public void sendTelemetry() {
-        myOpMode.telemetry.addData("Viper Position:", vipPos);
+        myOpMode.telemetry.addData("Viper Position:", viper.getCurrentPosition());
         myOpMode.telemetry.addData("Power:", pidf);
         myOpMode.telemetry.addData("Target Position:", target);
         myOpMode.telemetry.addData("Viper Max: ", max);
+    }
+
+    public void manualSetPower(double pow) {
+        viper.setPower(pow);
     }
 
     public void listen_simple() {

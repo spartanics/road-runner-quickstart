@@ -48,9 +48,11 @@ public class Shoulder {
     static final double deadzone = 0.3;
 
 
-    private PIDFController controller;
+    private PIDFController controller_up;
+    private PIDFController controller_down;
 
-    public static final double p = 0.003, i = 0.1, d = 0.0002;
+
+    public static final double p_up = 0.01, p_down = 0.003, i = 0.1, d_up = 0.0001, d_down = 0.0001;
     public static final double f = 0.00003;
 
     public static int target = 100;
@@ -74,8 +76,11 @@ public class Shoulder {
     public void init() {
         // Define and Initialize Motors (note: need to use reference to actual OpMode).
 
-        controller = new PIDFController(p, i, d, f);
-        controller.setTolerance(50, 100);
+        controller_up = new PIDFController(p_up, i, d_up, f);
+        controller_up.setTolerance(50, 100);
+
+        controller_down = new PIDFController(p_down, i, d_down, f);
+        controller_down.setTolerance(50, 100);
 
         shoulder_right = myOpMode.hardwareMap.get(DcMotorEx.class, "left_tower");
         shoulder_left = myOpMode.hardwareMap.get(DcMotorEx.class, "right_tower");
@@ -111,11 +116,26 @@ public class Shoulder {
         return new AutonListen();
     }
 
+    public class AutonTargetSetter implements Action {
+        private int autonTarget = 0;
+        public AutonTargetSetter(int t) {
+            this.autonTarget = t;
+        }
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            setTarget(autonTarget);
+            return false;
+        }
+    }
+
+    public Action autonSetShoulderTarget(int t) {
+        return new AutonTargetSetter(t);
+    }
 
     public class AutonHC implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            setTarget(540);
+            setTarget(530);
             return false;
         }
     }
@@ -132,6 +152,16 @@ public class Shoulder {
     }
     public Action autonDown() {
         return new AutonDown();
+    }
+
+    public Action autonSlightDown() {
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                setTarget(500);
+                return false;
+            }
+        };
     }
 
     public class AutonMidDown implements Action {
@@ -213,10 +243,20 @@ public class Shoulder {
 
     public void autoListen() {
         int armPos = shoulder_left.getCurrentPosition();
+        PIDFController controller;
+
+        if (target > armPos) {
+            controller = controller_up;
+        } else {
+            controller = controller_down;
+        }
+
         pidf = controller.calculate(armPos, target);
 
         shoulder_right.setPower(normalize_power(pidf));
         shoulder_left.setPower(normalize_power(pidf));
+
+        sendTelemetry();
     }
 
     public void listen() {
@@ -258,7 +298,9 @@ public class Shoulder {
 
         }
         armPos = shoulder_left.getCurrentPosition();
-        pidf = controller.calculate(armPos, target);
+
+
+        pidf = controller_down.calculate(armPos, target);
 
         if (armPos > 850) {
             pidf = pidf - f;
