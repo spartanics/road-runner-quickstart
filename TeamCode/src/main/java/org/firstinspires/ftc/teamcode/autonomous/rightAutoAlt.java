@@ -24,13 +24,14 @@ import org.firstinspires.ftc.teamcode.hardware.tidev2.Viper;
 @Autonomous(name = "4 clip Robotnik Style", group = "Autonomous")
 public class rightAutoAlt extends LinearOpMode {
     final double POSX_FARTHEST = 35;
-    final double POSY_WALL = -60;
+    final double POSY_WALL = -61;
     final double POSX_COLLECT = 45;
     final double POSX_BAR = 5;
-    final double POSY_BAR = -35;
-    final int POS_SHOULDER_HANG = 480;
-    final int POS_VIPER_HANG = 3300;
+    final double POSY_BAR = -36;
+    final int POS_SHOULDER_HANG = 490;
+    final int POS_VIPER_HANG = 3500;
     final double TS_WAIT_TO_GRAB_SAMPLE = 0.1;
+    final double DEG_HEADING_GRAB = -80;
 
     Pose2d startPose;
     MecanumDrive drive;
@@ -51,6 +52,11 @@ public class rightAutoAlt extends LinearOpMode {
                 .waitSeconds(.2);
     }
 
+    public TrajectoryActionBuilder testHangHeight(TrajectoryActionBuilder t) {
+        return t
+                .afterTime(0, shoulder.autonSetShoulderTarget(POS_SHOULDER_HANG))
+                .afterTime(0.1, viper.autonSetViperTarget(POS_VIPER_HANG));
+    }
     public TrajectoryActionBuilder doGoHang(TrajectoryActionBuilder t) {
         return t
                 .afterTime(0, shoulder.autonSetShoulderTarget(POS_SHOULDER_HANG))
@@ -103,7 +109,7 @@ public class rightAutoAlt extends LinearOpMode {
                 .afterTime(0.5, shoulder.autonDown())
                 .setReversed(true)
                 .splineToSplineHeading(new Pose2d(new Vector2d(POSX_FARTHEST, POSY_WALL),
-                        Math.toRadians(-75)), Math.toRadians(0));
+                        Math.toRadians(DEG_HEADING_GRAB)), Math.toRadians(0));
     }
 
     public TrajectoryActionBuilder doPark(TrajectoryActionBuilder t) {
@@ -129,15 +135,15 @@ public class rightAutoAlt extends LinearOpMode {
 
         // one in observation zone
         builder = doCollectSecondSampleToObservationZone(builder);
-        builder = doClipSampleAndHang(builder, 2);
+        builder = doClipSampleAndHang(builder, -4);
         builder = doPostHang(builder);
 
         builder = doGoObsZoneToClipSample(builder);
-        builder = doClipSampleAndHang(builder, -2);
+        builder = doClipSampleAndHang(builder, 1);
         builder = doPostHang(builder);
 
         builder = doGoObsZoneToClipSample(builder);
-        builder = doClipSampleAndHang(builder, -1);
+        builder = doClipSampleAndHang(builder, 4);
         builder = doPostHang(builder);
 
         builder = doPark(builder);
