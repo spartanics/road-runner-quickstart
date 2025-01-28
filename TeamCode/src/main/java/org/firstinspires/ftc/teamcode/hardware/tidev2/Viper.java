@@ -37,6 +37,7 @@ import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 public class Viper {
@@ -78,6 +79,8 @@ public class Viper {
         controller = new PIDFController(p, i, d, f);
         // Define and Initialize Motors (note: need to use reference to actual OpMode).
         viper = myOpMode.hardwareMap.get(DcMotorEx.class, "viper_slide");
+        viper.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
         viper.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
