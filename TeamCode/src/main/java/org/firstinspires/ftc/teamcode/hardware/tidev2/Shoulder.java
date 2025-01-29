@@ -135,7 +135,7 @@ public class Shoulder {
     public class AutonHC implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            setTarget(510);
+            setTarget(530);
             return false;
         }
     }
@@ -146,7 +146,7 @@ public class Shoulder {
     public class AutonDown implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            setTarget(10);
+            setTarget(70);
             return false;
         }
     }
@@ -245,7 +245,7 @@ public class Shoulder {
         int armPos = shoulder_left.getCurrentPosition();
         PIDFController controller;
 
-        if (target - 50 > armPos) {
+        if (target > armPos) {
             controller = controller_up;
         } else {
             controller = controller_down;
@@ -300,15 +300,7 @@ public class Shoulder {
         armPos = shoulder_left.getCurrentPosition();
 
 
-        PIDFController controller;
-
-        if (target - 50 > armPos) {
-            controller = controller_up;
-        } else {
-            controller = controller_down;
-        }
-
-        pidf = controller.calculate(armPos, target);
+        pidf = controller_down.calculate(armPos, target);
 
         if (armPos > 850) {
             pidf = pidf - f;
