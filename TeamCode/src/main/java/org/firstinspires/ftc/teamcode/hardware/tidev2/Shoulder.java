@@ -72,6 +72,11 @@ public class Shoulder {
 
     int armPos;
 
+    public void init(PIDFController c) {
+        init();
+        controller_up = c;
+        controller_down = c;
+    }
 
     public void init() {
         // Define and Initialize Motors (note: need to use reference to actual OpMode).
@@ -154,27 +159,6 @@ public class Shoulder {
         return new AutonDown();
     }
 
-    public Action autonSlightDown() {
-        return new Action() {
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                setTarget(500);
-                return false;
-            }
-        };
-    }
-
-    public class AutonMidDown implements Action {
-        @Override
-        public boolean run(@NonNull TelemetryPacket packet) {
-            setTarget(200);
-            return false;
-        }
-    }
-    public Action autonMidDown() {
-        return new AutonMidDown();
-    }
-
     public class AutonDownHC implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
@@ -198,10 +182,6 @@ public class Shoulder {
     public Action autonUpHB() {
         return new AutonUpHB();
     }
-
-
-
-
 
     public double toDegrees(int pos) {
         return (pos * (3.0 / 23.0)) - 42;
