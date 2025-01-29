@@ -19,9 +19,9 @@ public class experimentalleft {
 
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(-38, -60, Math.toRadians(180)))
                 //.afterTime(0, intake.autoIntake())
-                .splineToLinearHeading(new Pose2d(new Vector2d(-54.25, -54.25), Math.toRadians(225)), Math.toRadians(225))
+                .splineToLinearHeading(new Pose2d(new Vector2d(-53, -53), Math.toRadians(225)), Math.toRadians(245))
                 //.afterTime(0, shoulder.autonUpHB())
-                .waitSeconds(1)
+                .waitSeconds(0.8)
                 //.afterTime(0, viper.autonHB())
                 .waitSeconds(1)
                 //.afterTime(0, elbow.autonHB())
@@ -32,13 +32,11 @@ public class experimentalleft {
                 //.afterTime(0, elbow.autonZero())
                 //.afterTime(0, viper.autonDown())
                 .waitSeconds(1)
-                //.afterTime(0, shoulder.autonMidDown())
-
-                .strafeTo(new Vector2d(-54.25, -54.25))
                 //.afterTime(0, shoulder.autonDown())
                 //one in hb
 
                 //pick sample
+                .setReversed(true)
                 .splineToLinearHeading(new Pose2d(new Vector2d(-42, -26), Math.toRadians(180)), Math.toRadians(90))
                 //.afterTime(0, elbow.autonPick())
                 //.afterTime(0, intake.autoIntake())
@@ -47,9 +45,9 @@ public class experimentalleft {
                 //.afterTime(0, elbow.autonZero())
                 .waitSeconds(0.1)
 
-                .splineToLinearHeading(new Pose2d(new Vector2d(-54.25, -54.25), Math.toRadians(225)), Math.toRadians(225))
+                .splineToLinearHeading(new Pose2d(new Vector2d(-53, -53), Math.toRadians(225)), Math.toRadians(200))
                 //.afterTime(0, shoulder.autonUpHB())
-                .waitSeconds(1)
+                .waitSeconds(0.8)
                 //.afterTime(0, viper.autonHB())
                 .waitSeconds(1)
                 //.afterTime(0, elbow.autonHB())
@@ -60,12 +58,11 @@ public class experimentalleft {
                 //.afterTime(0, elbow.autonZero())
                 //.afterTime(0, viper.autonDown())
                 .waitSeconds(1)
-                //.afterTime(0, shoulder.autonMidDown())
-                .strafeTo(new Vector2d(-54.25, -54.25))
                 //.afterTime(0, shoulder.autonDown())
                 //two in hb
 
                 //pick sample
+                .setReversed(true)
                 .splineToLinearHeading(new Pose2d(new Vector2d(-50, -26), Math.toRadians(180)), Math.toRadians(90))
                 //.afterTime(0, elbow.autonPick())
                 //.afterTime(0, intake.autoIntake())
@@ -75,9 +72,9 @@ public class experimentalleft {
                 .waitSeconds(0.1)
 
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(new Vector2d(-54.25, -54.25), Math.toRadians(225)), Math.toRadians(225))
+                .splineToLinearHeading(new Pose2d(new Vector2d(-53, -53), Math.toRadians(225)), Math.toRadians(200))
                 //.afterTime(0, shoulder.autonUpHB())
-                .waitSeconds(1)
+                .waitSeconds(0.8)
                 //.afterTime(0, viper.autonHB())
                 .waitSeconds(1)
                 //.afterTime(0, elbow.autonHB())
@@ -88,9 +85,8 @@ public class experimentalleft {
                 //.afterTime(0, elbow.autonZero())
                 //.afterTime(0, viper.autonDown())
                 .waitSeconds(1)
-                //.afterTime(0, shoulder.autonMidDown())
-                .strafeTo(new Vector2d(-54.25, -54.25))
                 //.afterTime(0, shoulder.autonDown())
+                .strafeTo(new Vector2d(-54.25, -54.25))
                 //three in hb
                 .build());
 

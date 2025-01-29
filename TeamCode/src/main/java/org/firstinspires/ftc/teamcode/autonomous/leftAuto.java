@@ -9,6 +9,7 @@ import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
+import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -32,7 +33,10 @@ public class leftAuto extends LinearOpMode {
     Viper viper = new Viper(this);
     Claw claw = new Claw(this);
 
+    public static final double kp = 0.003, ki = 0.1, kd = 0.0002;
+    public static final double kf = 0.00003;
 
+    PIDFController controller = new PIDFController(kp, ki, kd, kf);
 
 
 
@@ -42,9 +46,9 @@ public class leftAuto extends LinearOpMode {
         drive = new MecanumDrive(hardwareMap, startPose);
         TrajectoryActionBuilder build = drive.actionBuilder(startPose)
                 .afterTime(0, intake.autoIntake())
-                .splineToLinearHeading(new Pose2d(new Vector2d(-54.25, -54.25), Math.toRadians(225)), Math.toRadians(225))
+                .splineToLinearHeading(new Pose2d(new Vector2d(-53, -53), Math.toRadians(225)), Math.toRadians(245))
                 .afterTime(0, shoulder.autonUpHB())
-                .waitSeconds(1)
+                .waitSeconds(0.8)
                 .afterTime(0, viper.autonHB())
                 .waitSeconds(1)
                 .afterTime(0, elbow.autonHB())
@@ -55,25 +59,22 @@ public class leftAuto extends LinearOpMode {
                 .afterTime(0, elbow.autonZero())
                 .afterTime(0, viper.autonDown())
                 .waitSeconds(1)
-                .afterTime(0, shoulder.autonMidDown())
-
-                .strafeTo(new Vector2d(-54.25, -54.25))
                 .afterTime(0, shoulder.autonDown())
                 //one in hb
 
                 //pick sample
+                .setReversed(true)
                 .splineToLinearHeading(new Pose2d(new Vector2d(-42, -26), Math.toRadians(180)), Math.toRadians(90))
-                .waitSeconds(0.2)
                 .afterTime(0, elbow.autonPick())
                 .afterTime(0, intake.autoIntake())
-                .waitSeconds(2)
+                .waitSeconds(1.3)
                 .afterTime(0, intake.autoStoptake())
                 .afterTime(0, elbow.autonZero())
                 .waitSeconds(0.1)
 
-                .splineToLinearHeading(new Pose2d(new Vector2d(-54.25, -54.25), Math.toRadians(225)), Math.toRadians(225))
+                .splineToLinearHeading(new Pose2d(new Vector2d(-53, -53), Math.toRadians(225)), Math.toRadians(200))
                 .afterTime(0, shoulder.autonUpHB())
-                .waitSeconds(1)
+                .waitSeconds(0.8)
                 .afterTime(0, viper.autonHB())
                 .waitSeconds(1)
                 .afterTime(0, elbow.autonHB())
@@ -84,24 +85,23 @@ public class leftAuto extends LinearOpMode {
                 .afterTime(0, elbow.autonZero())
                 .afterTime(0, viper.autonDown())
                 .waitSeconds(1)
-                .afterTime(0, shoulder.autonMidDown())
-                .strafeTo(new Vector2d(-54.25, -54.25))
                 .afterTime(0, shoulder.autonDown())
                 //two in hb
 
                 //pick sample
+                .setReversed(true)
                 .splineToLinearHeading(new Pose2d(new Vector2d(-50, -26), Math.toRadians(180)), Math.toRadians(90))
                 .afterTime(0, elbow.autonPick())
                 .afterTime(0, intake.autoIntake())
-                .waitSeconds(1.5)
-                .afterTime(0, elbow.autonZero())
-                .waitSeconds(0.5)
+                .waitSeconds(1.3)
                 .afterTime(0, intake.autoStoptake())
+                .afterTime(0, elbow.autonZero())
+                .waitSeconds(0.1)
 
                 .setReversed(true)
-                .splineToLinearHeading(new Pose2d(new Vector2d(-54.25, -54.25), Math.toRadians(225)), Math.toRadians(225))
+                .splineToLinearHeading(new Pose2d(new Vector2d(-53, -53), Math.toRadians(225)), Math.toRadians(200))
                 .afterTime(0, shoulder.autonUpHB())
-                .waitSeconds(1)
+                .waitSeconds(0.8)
                 .afterTime(0, viper.autonHB())
                 .waitSeconds(1)
                 .afterTime(0, elbow.autonHB())
@@ -112,13 +112,12 @@ public class leftAuto extends LinearOpMode {
                 .afterTime(0, elbow.autonZero())
                 .afterTime(0, viper.autonDown())
                 .waitSeconds(1)
-                .afterTime(0, shoulder.autonMidDown())
-                .strafeTo(new Vector2d(-54.25, -54.25))
                 .afterTime(0, shoulder.autonDown())
+                .strafeTo(new Vector2d(-54.25, -54.25))
                 //three in hb
                 ;
 
-        shoulder.init();
+        shoulder.init(controller);
         elbow.init();
         intake.init();
         viper.init();

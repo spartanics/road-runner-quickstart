@@ -72,6 +72,11 @@ public class Shoulder {
 
     int armPos;
 
+    public void init(PIDFController c) {
+        init();
+        controller_up = c;
+        controller_down = c;
+    }
 
     public void init() {
         // Define and Initialize Motors (note: need to use reference to actual OpMode).
