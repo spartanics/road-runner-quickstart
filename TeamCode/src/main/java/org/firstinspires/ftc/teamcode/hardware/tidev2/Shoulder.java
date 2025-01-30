@@ -193,12 +193,14 @@ public class Shoulder {
 
 
     public void sendTelemetry() {
-        myOpMode.telemetry.addData("Arm pos Left/Right", "%4d / %4d",
+        myOpMode.telemetry.addLine("----SHOULDER----");
+        myOpMode.telemetry.addData("pos Left/Right", "%4d / %4d",
                 shoulder_left.getCurrentPosition(),
                 shoulder_right.getCurrentPosition());
-        myOpMode.telemetry.addData("Shoulder pidf:", pidf);
-        myOpMode.telemetry.addData("Shoulder pos:", armPos);
-        myOpMode.telemetry.addData("Shoulder target:", target);
+        myOpMode.telemetry.addData("pidf:", pidf);
+        myOpMode.telemetry.addData("pos:", armPos);
+        myOpMode.telemetry.addData("target:", target);
+        myOpMode.telemetry.addLine();
     }
 
 
@@ -214,6 +216,8 @@ public class Shoulder {
 
 
     public void setTarget(int tar) {
+        controller_up.setSetPoint(tar);
+        controller_down.setSetPoint(tar);
         target = tar;
     }
 
@@ -231,7 +235,8 @@ public class Shoulder {
             controller = controller_down;
         }
 
-        pidf = controller.calculate(armPos, target);
+        pidf = controller.calculate(armPos);
+//        pidf = controller.calculate(armPos, target);
 
         shoulder_right.setPower(normalize_power(pidf));
         shoulder_left.setPower(normalize_power(pidf));

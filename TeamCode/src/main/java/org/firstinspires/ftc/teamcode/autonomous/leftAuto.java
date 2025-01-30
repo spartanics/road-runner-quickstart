@@ -12,6 +12,7 @@ import com.acmerobotics.roadrunner.ftc.Actions;
 import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
 import org.firstinspires.ftc.teamcode.hardware.tidev2.Claw;
@@ -38,7 +39,8 @@ public class leftAuto extends LinearOpMode {
 
     PIDFController controller = new PIDFController(kp, ki, kd, kf);
 
-
+    boolean inited;
+    ElapsedTime timer;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -123,9 +125,29 @@ public class leftAuto extends LinearOpMode {
         viper.init();
         claw.init();
 
-        while (!isStopRequested() && !opModeIsActive()) {
-            viper.listen();
+        ElapsedTime timer = new ElapsedTime();
+        boolean inited = false;
 
+        while (!isStopRequested() && !opModeIsActive()) {
+
+            Actions.runBlocking(new SequentialAction(
+                    new InstantAction(() -> shoulder.autonListen()),
+                    new InstantAction(() -> viper.autonListen()),
+                    new InstantAction(() -> elbow.autonListen()),
+                    new InstantAction(() -> intake.autonListen()),
+                    new InstantAction(() -> claw.autonListen())
+            ));
+
+            if (timer.seconds() < 4 && !inited && !viper.isRetracted()) {
+                viper.manualSetPower(-0.05);
+            } else {
+                viper.init();
+                shoulder.init(controller);
+
+                shoulder.setTarget(70);
+                viper.setTarget(40);
+                inited = true;
+            }
         }
 
 

@@ -39,6 +39,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class Viper {
 
@@ -49,6 +50,8 @@ public class Viper {
     // Define class members
 
     private DcMotorEx viper;
+
+    private TouchSensor touch;
 
     private OpMode myOpMode;   // gain access to methods in the calling OpMode.
 
@@ -80,6 +83,8 @@ public class Viper {
         // Define and Initialize Motors (note: need to use reference to actual OpMode).
         viper = myOpMode.hardwareMap.get(DcMotorEx.class, "viper_slide");
         viper.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        touch = myOpMode.hardwareMap.get(TouchSensor.class, "touch");
 
 
         viper.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -205,14 +210,26 @@ public class Viper {
     }
 
     public void sendTelemetry() {
-        myOpMode.telemetry.addData("Viper Position:", viper.getCurrentPosition());
+        myOpMode.telemetry.addLine("----VIPER----");
+        myOpMode.telemetry.addData("Position:", viper.getCurrentPosition());
         myOpMode.telemetry.addData("Power:", pidf);
         myOpMode.telemetry.addData("Target Position:", target);
-        myOpMode.telemetry.addData("Viper Max: ", max);
+        myOpMode.telemetry.addData("Max: ", max);
+        myOpMode.telemetry.addData("Pressed: ", touch.isPressed());
+        myOpMode.telemetry.addData("Touch Value: ", touch.getValue());
+        myOpMode.telemetry.addLine();
     }
 
     public void manualSetPower(double pow) {
         viper.setPower(pow);
+    }
+
+    public double getTouch() {
+        return touch.getValue();
+    }
+
+    public boolean isRetracted() {
+        return touch.isPressed();
     }
 
     public void listen_simple() {

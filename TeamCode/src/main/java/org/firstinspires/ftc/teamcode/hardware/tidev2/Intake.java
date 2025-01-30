@@ -158,6 +158,8 @@ public class Intake {
 
 
     public void sendTelemetry() {
-        myOpMode.telemetry.addData("Intake Power", "%.2f", power);
+        myOpMode.telemetry.addLine("----INTAKE----");
+        myOpMode.telemetry.addData("Power", "%.2f", power);
+        myOpMode.telemetry.addLine();
     }
 }
