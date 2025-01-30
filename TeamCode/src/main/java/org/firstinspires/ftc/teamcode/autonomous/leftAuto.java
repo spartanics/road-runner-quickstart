@@ -139,7 +139,10 @@ public class leftAuto extends LinearOpMode {
             ));
 
             if (timer.seconds() < 4 && !inited && !viper.isRetracted()) {
-                viper.manualSetPower(-0.05);
+                viper.manualSetPower(-0.1);
+            } else if (inited) {
+                viper.listen();
+                shoulder.listen();
             } else {
                 viper.init();
                 shoulder.init(controller);

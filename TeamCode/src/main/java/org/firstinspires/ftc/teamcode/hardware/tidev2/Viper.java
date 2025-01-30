@@ -74,7 +74,7 @@ public class Viper {
 
     public static double shoulderDeg;
 
-
+    private boolean resetTouch;
 
 
 
@@ -217,6 +217,7 @@ public class Viper {
         myOpMode.telemetry.addData("Max: ", max);
         myOpMode.telemetry.addData("Pressed: ", touch.isPressed());
         myOpMode.telemetry.addData("Touch Value: ", touch.getValue());
+        myOpMode.telemetry.addData("Touch Reset: ", resetTouch);
         myOpMode.telemetry.addLine();
     }
 
@@ -234,7 +235,7 @@ public class Viper {
 
     public void listen_simple() {
         pidf = -myOpMode.gamepad2.left_stick_y;
-        if (pidf != 0.0) {
+        if (pidf != 0.0 && !touch.isPressed()) {
             viper.setPower(pidf);
             target = viper.getCurrentPosition();
         }
@@ -267,16 +268,20 @@ public class Viper {
 
         viper.setPower(pidf);
 
+        if (!touch.isPressed()) {
+            resetTouch = true;
+        }
 
-
-
-        if (myOpMode.gamepad2.start) {
+        if (myOpMode.gamepad2.start || (touch.isPressed() && resetTouch)) {
             // Reset the target to zero
-            target = 0;
 
             viper.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
             viper.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            target = 0;
+
+            resetTouch = false;
 
         }
 

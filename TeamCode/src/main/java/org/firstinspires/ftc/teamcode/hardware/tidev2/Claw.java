@@ -117,7 +117,7 @@ public class Claw {
     }
 
     public void sendTelemetry() {
-        myOpMode.telemetry.addLine("----Claw----");
+        myOpMode.telemetry.addLine("----CLAW----");
         myOpMode.telemetry.addData("Claw Position: ", pos);
         myOpMode.telemetry.addLine();
     }

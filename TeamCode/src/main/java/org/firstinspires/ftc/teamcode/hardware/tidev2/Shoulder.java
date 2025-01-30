@@ -50,9 +50,10 @@ public class Shoulder {
 
     private PIDFController controller_up;
     private PIDFController controller_down;
+    private PIDFController default_controller_up;
 
 
-    public static final double p_up = 0.01, p_down = 0.003, i = 0.1, d_up = 0.0001, d_down = 0.0001;
+    public static final double p_up = 0.01, p_down = 0.001, i = 0.1, d_up = 0.0001, d_down = 0.0002;
     public static final double f = 0.00003;
 
     public static int target = 100;
@@ -84,8 +85,12 @@ public class Shoulder {
         controller_up = new PIDFController(p_up, i, d_up, f);
         controller_up.setTolerance(50, 100);
 
+        default_controller_up = controller_up;
+
         controller_down = new PIDFController(p_down, i, d_down, f);
         controller_down.setTolerance(50, 100);
+
+
 
         shoulder_right = myOpMode.hardwareMap.get(DcMotorEx.class, "left_tower");
         shoulder_left = myOpMode.hardwareMap.get(DcMotorEx.class, "right_tower");
@@ -103,7 +108,7 @@ public class Shoulder {
         shoulder_left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         pidf = 0;
-        target = 0;
+        target = 100;
 
     }
 
@@ -191,6 +196,13 @@ public class Shoulder {
         return (int) (deg / (3.0 / 23.0));
     }
 
+    public void setTaperControllerUp() {
+        controller_up = controller_down;
+    }
+
+    public void restoreControllerUp() {
+        controller_up = default_controller_up;
+    }
 
     public void sendTelemetry() {
         myOpMode.telemetry.addLine("----SHOULDER----");
@@ -215,9 +227,8 @@ public class Shoulder {
     }
 
 
+
     public void setTarget(int tar) {
-        controller_up.setSetPoint(tar);
-        controller_down.setSetPoint(tar);
         target = tar;
     }
 
@@ -229,14 +240,13 @@ public class Shoulder {
         int armPos = shoulder_left.getCurrentPosition();
         PIDFController controller;
 
-        if (target > armPos) {
+        if (target - 50 > armPos) {
             controller = controller_up;
         } else {
             controller = controller_down;
         }
 
-        pidf = controller.calculate(armPos);
-//        pidf = controller.calculate(armPos, target);
+        pidf = controller.calculate(armPos, target);
 
         shoulder_right.setPower(normalize_power(pidf));
         shoulder_left.setPower(normalize_power(pidf));
@@ -285,7 +295,15 @@ public class Shoulder {
         armPos = shoulder_left.getCurrentPosition();
 
 
-        pidf = controller_down.calculate(armPos, target);
+        PIDFController controller;
+
+        if (target - 50 > armPos) {
+            controller = controller_up;
+        } else {
+            controller = controller_down;
+        }
+
+        pidf = controller.calculate(armPos, target);
 
         if (armPos > 850) {
             pidf = pidf - f;
@@ -298,12 +316,12 @@ public class Shoulder {
 
         if (myOpMode.gamepad2.start) {
             // Reset the target to zero
-            target = 0;
             shoulder_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             shoulder_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
             shoulder_right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             shoulder_left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            target = 0;
         }
     }
 }

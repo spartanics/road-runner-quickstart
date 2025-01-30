@@ -146,7 +146,7 @@ public class rightAutoJAlt extends LinearOpMode {
 
             if (timer.seconds() < 4 && !inited) {
                 viper.manualSetPower(-0.05);
-            }else if (inited == true) {
+            } else if (inited == true) {
                 viper.listen();
                 shoulder.listen();
             } else {
