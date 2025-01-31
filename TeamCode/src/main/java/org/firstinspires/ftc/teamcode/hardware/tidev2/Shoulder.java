@@ -50,14 +50,22 @@ public class Shoulder {
 
     private PIDFController controller_up;
     private PIDFController controller_down;
+    private PIDFController default_controller_up;
+    private PIDFController tapered_controller;
+
+    private String curr_controller = "default";
 
 
-    public static final double p_up = 0.01, p_down = 0.003, i = 0.1, d_up = 0.0001, d_down = 0.0001;
+    public static final double p_up = 0.01, p_down = 0.002, i = 0.1, d_up = 0.0001, d_down = 0.0002;
     public static final double f = 0.00003;
 
-    public static int target = 100;
+    public static int target = 0;
 
     double pidf;
+
+    private boolean fsmBucketState = false;
+
+    private boolean fsmSubOpState = false;
 
 
     private OpMode myOpMode;   // gain access to methods in the calling OpMode.
@@ -72,6 +80,11 @@ public class Shoulder {
 
     int armPos;
 
+    public void init(PIDFController c) {
+        init();
+        controller_up = c;
+        controller_down = c;
+    }
 
     public void init() {
         // Define and Initialize Motors (note: need to use reference to actual OpMode).
@@ -79,8 +92,12 @@ public class Shoulder {
         controller_up = new PIDFController(p_up, i, d_up, f);
         controller_up.setTolerance(50, 100);
 
+        default_controller_up = controller_up;
+
         controller_down = new PIDFController(p_down, i, d_down, f);
         controller_down.setTolerance(50, 100);
+
+
 
         shoulder_right = myOpMode.hardwareMap.get(DcMotorEx.class, "left_tower");
         shoulder_left = myOpMode.hardwareMap.get(DcMotorEx.class, "right_tower");
@@ -135,7 +152,7 @@ public class Shoulder {
     public class AutonHC implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            setTarget(510);
+            setTarget(530);
             return false;
         }
     }
@@ -146,33 +163,12 @@ public class Shoulder {
     public class AutonDown implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket packet) {
-            setTarget(10);
+            setTarget(70);
             return false;
         }
     }
     public Action autonDown() {
         return new AutonDown();
-    }
-
-    public Action autonSlightDown() {
-        return new Action() {
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-                setTarget(500);
-                return false;
-            }
-        };
-    }
-
-    public class AutonMidDown implements Action {
-        @Override
-        public boolean run(@NonNull TelemetryPacket packet) {
-            setTarget(200);
-            return false;
-        }
-    }
-    public Action autonMidDown() {
-        return new AutonMidDown();
     }
 
     public class AutonDownHC implements Action {
@@ -199,10 +195,6 @@ public class Shoulder {
         return new AutonUpHB();
     }
 
-
-
-
-
     public double toDegrees(int pos) {
         return (pos * (3.0 / 23.0)) - 42;
     }
@@ -211,14 +203,49 @@ public class Shoulder {
         return (int) (deg / (3.0 / 23.0));
     }
 
+    public void setTaperControllerUp() {
+        controller_up = controller_down;
+        curr_controller = "tapered";
+    }
+
+    public void restoreControllerUp() {
+        controller_up = default_controller_up;
+        curr_controller = "default";
+    }
+
+    public void resetFsmBucketState() {
+        fsmBucketState = false;
+    }
+
+    public void resetFsmSubOperatorState() {
+        fsmSubOpState = false;
+    }
+
+    public void startFsmBucketState() {
+        fsmBucketState = true;
+    }
+
+    public void startFsmSubOperatorState() {
+        fsmSubOpState = true;
+    }
+
+    public boolean isInZeroState() {
+        return !fsmBucketState && !fsmSubOpState;
+    }
+
+
+
 
     public void sendTelemetry() {
-        myOpMode.telemetry.addData("Arm pos Left/Right", "%4d / %4d",
+        myOpMode.telemetry.addLine("----SHOULDER----");
+        myOpMode.telemetry.addData("pos Left/Right", "%4d / %4d",
                 shoulder_left.getCurrentPosition(),
                 shoulder_right.getCurrentPosition());
-        myOpMode.telemetry.addData("Shoulder pidf:", pidf);
-        myOpMode.telemetry.addData("Shoulder pos:", armPos);
-        myOpMode.telemetry.addData("Shoulder target:", target);
+        myOpMode.telemetry.addData("pidf:", pidf);
+        myOpMode.telemetry.addData("pos:", armPos);
+        myOpMode.telemetry.addData("target:", target);
+        myOpMode.telemetry.addData("curr. controller:", curr_controller);
+        myOpMode.telemetry.addLine();
     }
 
 
@@ -231,6 +258,7 @@ public class Shoulder {
         }
         return power;
     }
+
 
 
     public void setTarget(int tar) {
@@ -321,12 +349,12 @@ public class Shoulder {
 
         if (myOpMode.gamepad2.start) {
             // Reset the target to zero
-            target = 0;
             shoulder_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             shoulder_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
             shoulder_right.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             shoulder_left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            target = 0;
         }
     }
 }

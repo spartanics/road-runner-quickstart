@@ -144,9 +144,9 @@ public class rightAutoJAlt extends LinearOpMode {
                     new InstantAction(() -> claw.autonListen())
             ));
 
-            if (timer.seconds() < 4 && !inited) {
-                viper.manualSetPower(-0.05);
-            }else if (inited == true) {
+            if (timer.seconds() < 4 && !inited && !viper.isRetracted()) {
+                viper.manualSetPower(-0.2);
+            } else if (inited) {
                 viper.listen();
                 shoulder.listen();
             } else {
@@ -156,15 +156,6 @@ public class rightAutoJAlt extends LinearOpMode {
                 shoulder.setTarget(70);
                 viper.setTarget(40);
                 inited = true;
-            }
-            if ((gamepad1.b || gamepad2.b) && !inited) {
-                viper.init();
-                shoulder.init();
-
-                shoulder.setTarget(10);
-                viper.setTarget(40);
-                inited = true;
-
             }
 
         }
