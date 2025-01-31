@@ -84,6 +84,8 @@ public class SubOperatorFSM {
         subStateTimer = new ElapsedTime();
     }
 
+
+
     public void listen() {
         int pos_elbow;
         int pos_shoulder;
@@ -138,7 +140,10 @@ public class SubOperatorFSM {
         // listen to commands
         switch (subState) {
             case ZERO_SUBSTATE:
-                shoulder.restoreControllerUp();
+                shoulder.resetFsmSubOperatorState();
+                if (shoulder.isInZeroState()) {
+                    shoulder.restoreControllerUp();
+                }
                 if (gamepad.dpad_down) {
                     // go to the shoulder sub pos
                     shoulder.setTarget(POS_SHOULDER_SUB);
@@ -148,6 +153,7 @@ public class SubOperatorFSM {
                 if (gamepad.y) {
                     subState = SubState.BEGIN_HANG_SUBSTATE;
                     shoulder.setTaperControllerUp();
+                    shoulder.startFsmSubOperatorState();
                     shoulder.setTarget(POS_SHOULDER_HANG);
 
                 }

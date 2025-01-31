@@ -51,14 +51,21 @@ public class Shoulder {
     private PIDFController controller_up;
     private PIDFController controller_down;
     private PIDFController default_controller_up;
+    private PIDFController tapered_controller;
+
+    private String curr_controller = "default";
 
 
-    public static final double p_up = 0.01, p_down = 0.001, i = 0.1, d_up = 0.0001, d_down = 0.0002;
+    public static final double p_up = 0.01, p_down = 0.002, i = 0.1, d_up = 0.0001, d_down = 0.0002;
     public static final double f = 0.00003;
 
-    public static int target = 100;
+    public static int target = 0;
 
     double pidf;
+
+    private boolean fsmBucketState = false;
+
+    private boolean fsmSubOpState = false;
 
 
     private OpMode myOpMode;   // gain access to methods in the calling OpMode.
@@ -108,7 +115,7 @@ public class Shoulder {
         shoulder_left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         pidf = 0;
-        target = 100;
+        target = 0;
 
     }
 
@@ -198,11 +205,36 @@ public class Shoulder {
 
     public void setTaperControllerUp() {
         controller_up = controller_down;
+        curr_controller = "tapered";
     }
 
     public void restoreControllerUp() {
         controller_up = default_controller_up;
+        curr_controller = "default";
     }
+
+    public void resetFsmBucketState() {
+        fsmBucketState = false;
+    }
+
+    public void resetFsmSubOperatorState() {
+        fsmSubOpState = false;
+    }
+
+    public void startFsmBucketState() {
+        fsmBucketState = true;
+    }
+
+    public void startFsmSubOperatorState() {
+        fsmSubOpState = true;
+    }
+
+    public boolean isInZeroState() {
+        return !fsmBucketState && !fsmSubOpState;
+    }
+
+
+
 
     public void sendTelemetry() {
         myOpMode.telemetry.addLine("----SHOULDER----");
@@ -212,6 +244,7 @@ public class Shoulder {
         myOpMode.telemetry.addData("pidf:", pidf);
         myOpMode.telemetry.addData("pos:", armPos);
         myOpMode.telemetry.addData("target:", target);
+        myOpMode.telemetry.addData("curr. controller:", curr_controller);
         myOpMode.telemetry.addLine();
     }
 
