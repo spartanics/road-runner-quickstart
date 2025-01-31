@@ -39,7 +39,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class Viper {
 
@@ -50,8 +49,6 @@ public class Viper {
     // Define class members
 
     private DcMotorEx viper;
-
-    private TouchSensor touch;
 
     private OpMode myOpMode;   // gain access to methods in the calling OpMode.
 
@@ -74,7 +71,7 @@ public class Viper {
 
     public static double shoulderDeg;
 
-    private boolean resetTouch;
+
 
 
 
@@ -83,8 +80,6 @@ public class Viper {
         // Define and Initialize Motors (note: need to use reference to actual OpMode).
         viper = myOpMode.hardwareMap.get(DcMotorEx.class, "viper_slide");
         viper.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        touch = myOpMode.hardwareMap.get(TouchSensor.class, "touch");
 
 
         viper.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -155,7 +150,7 @@ public class Viper {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            setTarget(50);
+            setTarget(40);
             return false;
         }
     }
@@ -210,32 +205,19 @@ public class Viper {
     }
 
     public void sendTelemetry() {
-        myOpMode.telemetry.addLine("----VIPER----");
-        myOpMode.telemetry.addData("Position:", viper.getCurrentPosition());
+        myOpMode.telemetry.addData("Viper Position:", viper.getCurrentPosition());
         myOpMode.telemetry.addData("Power:", pidf);
         myOpMode.telemetry.addData("Target Position:", target);
-        myOpMode.telemetry.addData("Max: ", max);
-        myOpMode.telemetry.addData("Pressed: ", touch.isPressed());
-        myOpMode.telemetry.addData("Touch Value: ", touch.getValue());
-        myOpMode.telemetry.addData("Touch Reset: ", resetTouch);
-        myOpMode.telemetry.addLine();
+        myOpMode.telemetry.addData("Viper Max: ", max);
     }
 
     public void manualSetPower(double pow) {
         viper.setPower(pow);
     }
 
-    public double getTouch() {
-        return touch.getValue();
-    }
-
-    public boolean isRetracted() {
-        return touch.isPressed();
-    }
-
     public void listen_simple() {
         pidf = -myOpMode.gamepad2.left_stick_y;
-        if (pidf != 0.0 && !touch.isPressed()) {
+        if (pidf != 0.0) {
             viper.setPower(pidf);
             target = viper.getCurrentPosition();
         }
@@ -248,10 +230,10 @@ public class Viper {
         }
 
         // move viper according to the left stick y
-        if (Math.toRadians(shoulderDeg) == 90 || fromInches(Math.abs(13 / (Math.cos(Math.toRadians(shoulderDeg))))) > 3900) {
-            max = 5000;
+        if (Math.toRadians(shoulderDeg) == 90 || fromInches(Math.abs(14 / (Math.cos(Math.toRadians(shoulderDeg))))) > 5800) {
+            max = 5800;
         } else {
-            max = fromInches(Math.abs(13 / (Math.cos(Math.toRadians(shoulderDeg)))));
+            max = fromInches(Math.abs(14 / (Math.cos(Math.toRadians(shoulderDeg)))));
         }
 
 
@@ -268,20 +250,16 @@ public class Viper {
 
         viper.setPower(pidf);
 
-        if (!touch.isPressed()) {
-            resetTouch = true;
-        }
 
-        if (myOpMode.gamepad2.start || (touch.isPressed() && resetTouch)) {
+
+
+        if (myOpMode.gamepad2.start) {
             // Reset the target to zero
+            target = 0;
 
             viper.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
             viper.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-            target = 0;
-
-            resetTouch = false;
 
         }
 
