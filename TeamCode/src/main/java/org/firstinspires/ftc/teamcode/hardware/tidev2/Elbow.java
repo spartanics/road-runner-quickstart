@@ -46,10 +46,6 @@ public class Elbow {
     public final double MAX_POWER = 1.0;
     public final double MIN_POWER = -1.0;
 
-    // constant if using 19.2:1 motor
-    public final double REPLACEMENT_RATIO = 537.7 / 1425.1;
-    public final boolean USING_REPLACEMENT = false;
-
     public final int MAX_ELBOW = 650;
     public final int MAX_STRETCH = 750;
 
@@ -98,9 +94,6 @@ public class Elbow {
 
     public void setElbow(int tar) {
         target = tar;
-        if (USING_REPLACEMENT) {
-            target *= REPLACEMENT_RATIO;
-        }
     }
 
     public double normalize_power(double power) {
@@ -125,11 +118,9 @@ public class Elbow {
     public void sendTelemetry() {
         elbPos = elbow.getCurrentPosition();
 
-        myOpMode.telemetry.addLine("----ELBOW----");
-        myOpMode.telemetry.addData("Position:", elbPos);
+        myOpMode.telemetry.addData("Elbow Position:", elbPos);
         myOpMode.telemetry.addData("Power:", pidf);
-        myOpMode.telemetry.addData("Target:", target);
-        myOpMode.telemetry.addLine();
+        myOpMode.telemetry.addData("Target Position:", target);
     }
 
     public void listen_simple() {
@@ -213,9 +204,6 @@ public class Elbow {
             }
 
             elbPos = elbow.getCurrentPosition();
-            if (USING_REPLACEMENT) {
-                elbPos *= REPLACEMENT_RATIO;
-            }
             pidf = controller.calculate(elbPos, target);
 
             elbow.setPower(normalize_power(pidf));

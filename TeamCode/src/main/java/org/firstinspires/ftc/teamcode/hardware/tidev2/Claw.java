@@ -39,13 +39,26 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Claw {
 
+    public enum PivotPosState {
+        NORMAL, HIGH, LOW, CUSTOM
+    }
+
+    // Define class members
+    public final double PIVOT_LOW = 0.68;
+    public final double PIVOT_NORMAL = 0.85;
+    public final double PIVOT_HIGH = 1.0;
+    double wildcard;
+
     double clawOpen = 0.3;
     double clawClose = 0.68;
 
     ElapsedTime toggle_time = new ElapsedTime();
+    ElapsedTime pivot_delay = new ElapsedTime();
 
     private OpMode myOpMode;   // gain access to methods in the calling OpMode.
     boolean pos = false;
+    PivotPosState pivotpos = PivotPosState.LOW;
+    Servo pivot;
     Servo claw;
     public Claw(OpMode opmode) {
         myOpMode = opmode;
@@ -54,9 +67,29 @@ public class Claw {
     public void init() {
         // Define and Initialize Motors (note: need to use reference to actual OpMode).
         // turn torque to pivot in preparation for claw update
+        pivot = myOpMode.hardwareMap.get(Servo.class, "pivot");
         claw = myOpMode.hardwareMap.get(Servo.class, "claw");
+        pivotpos = PivotPosState.LOW;
     }
 
+    public void speedOpen(boolean open) {
+        if (open) {
+
+            pos = true;
+        } else {
+
+            pos = false;
+        }
+    }
+
+    public void setPivot(double pos) {
+        pivot.setPosition(pos);
+    }
+
+    public void customPivotPos(double pos) {
+        pivotpos = PivotPosState.CUSTOM;
+        wildcard = pos;
+    }
 
     public class AutonListen implements Action {
         @Override
@@ -68,6 +101,30 @@ public class Claw {
     }
     public Action autonListen() {
         return new AutonListen();
+    }
+
+
+    public class AutonNormalPivot implements Action {
+        @Override
+        public boolean run(@NonNull TelemetryPacket packet) {
+            setPivot(0);
+            return false;
+        }
+    }
+    public Action autonNormalPivot() {
+        return new AutonNormalPivot();
+    }
+
+    public class AutonFlushPivot implements Action {
+
+        @Override
+        public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+            setPivot(1);
+            return false;
+        }
+    }
+    public Action autonFlushPivot() {
+        return new AutonFlushPivot();
     }
 
     public class AutonOpenClaw implements Action {
@@ -100,13 +157,49 @@ public class Claw {
         } else {
             claw.setPosition(clawClose);
         }
+        switch (pivotpos) {
+            case NORMAL:
+                pivot.setPosition(PIVOT_NORMAL);
+                break;
+            case HIGH:
+                pivot.setPosition(PIVOT_HIGH);
+                break;
+            case LOW:
+                pivot.setPosition(PIVOT_LOW);
+                break;
+            case CUSTOM:
+                pivot.setPosition(wildcard);
+                break;
+        }
     }
 
+
     public void listen() {
+
 
         if (myOpMode.gamepad2.x && toggle_time.seconds() > 0.5) {
             toggle_time.reset();
             pos = !pos;
+        }
+
+        if (myOpMode.gamepad2.back && pivot_delay.seconds() > 0.2) {
+            pivot_delay.reset();
+            switch(pivotpos) {
+                case LOW:
+                    pivotpos = PivotPosState.HIGH;
+                    break;
+                case NORMAL:
+                    pivotpos = PivotPosState.LOW;
+                    break;
+                case HIGH:
+                    pivotpos = PivotPosState.NORMAL;
+                    break;
+                case CUSTOM:
+                    pivotpos = PivotPosState.LOW;
+                    break;
+
+            }
+
         }
 
         if (pos) {
@@ -114,11 +207,25 @@ public class Claw {
         } else {
             claw.setPosition(clawClose);
         }
+        switch (pivotpos) {
+            case NORMAL:
+                pivot.setPosition(PIVOT_NORMAL);
+                break;
+            case HIGH:
+                pivot.setPosition(PIVOT_HIGH);
+                break;
+            case LOW:
+                pivot.setPosition(PIVOT_LOW);
+                break;
+            case CUSTOM:
+                pivot.setPosition(wildcard);
+                break;
+
+        }
     }
 
     public void sendTelemetry() {
-        myOpMode.telemetry.addLine("----CLAW----");
+        myOpMode.telemetry.addData("Claw Pivot Position: ", pivotpos);
         myOpMode.telemetry.addData("Claw Position: ", pos);
-        myOpMode.telemetry.addLine();
     }
 }
