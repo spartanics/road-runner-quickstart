@@ -156,8 +156,6 @@ public class BucketOperatorFSM {
 
                 if (gamepad.dpad_right) {
                     bucketStateTimer.reset();
-                    shoulder.setTaperControllerUp();
-                    shoulder.startFsmBucketState();
                     shoulder.setTarget(510);
                     bucketState = BucketState.READY_TO_CLIP;
                 }
