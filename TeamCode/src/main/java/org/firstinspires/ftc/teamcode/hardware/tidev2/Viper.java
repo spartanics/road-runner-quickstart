@@ -126,7 +126,7 @@ public class Viper {
 
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            setTarget(3500);
+            setTarget(3800);
             return false;
         }
     }
@@ -211,13 +211,13 @@ public class Viper {
 
     public void sendTelemetry() {
         myOpMode.telemetry.addLine("----VIPER----");
-        myOpMode.telemetry.addData("Position:", viper.getCurrentPosition());
-        myOpMode.telemetry.addData("Power:", pidf);
-        myOpMode.telemetry.addData("Target Position:", target);
-        myOpMode.telemetry.addData("Max: ", max);
-        myOpMode.telemetry.addData("Pressed: ", touch.isPressed());
-        myOpMode.telemetry.addData("Touch Value: ", touch.getValue());
-        myOpMode.telemetry.addData("Touch Reset: ", resetTouch);
+        myOpMode.telemetry.addData("Position", viper.getCurrentPosition());
+        myOpMode.telemetry.addData("Power", pidf);
+        myOpMode.telemetry.addData("Target Position", target);
+        myOpMode.telemetry.addData("Max", max);
+        myOpMode.telemetry.addData("Pressed", touch.isPressed());
+        myOpMode.telemetry.addData("Touch Value", touch.getValue());
+        myOpMode.telemetry.addData("Touch Reset", resetTouch);
         myOpMode.telemetry.addLine();
     }
 
@@ -247,11 +247,16 @@ public class Viper {
             return;
         }
 
-        // move viper according to the left stick y
-        if (Math.toRadians(shoulderDeg) == 90 || fromInches(Math.abs(13 / (Math.cos(Math.toRadians(shoulderDeg))))) > 3900) {
-            max = 5000;
+        if (shoulderDeg % 180 != 90) {
+            // move viper according to the left stick y
+            if (Math.abs(5000 / (Math.cos(Math.toRadians(shoulderDeg)))) > 5000) {
+                max = 5000;
+            } else {
+                //                horizontal max ↓
+                max = fromInches(Math.abs((5000.0 / 300) * (Math.cos(Math.toRadians(shoulderDeg)))));
+            }
         } else {
-            max = fromInches(Math.abs(13 / (Math.cos(Math.toRadians(shoulderDeg)))));
+            max = 5000;
         }
 
 

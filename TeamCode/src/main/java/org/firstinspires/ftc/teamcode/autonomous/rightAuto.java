@@ -12,6 +12,7 @@ import com.acmerobotics.roadrunner.ftc.Actions;
 
 // Non-RR imports
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -23,7 +24,7 @@ import org.firstinspires.ftc.teamcode.hardware.tidev2.Intake;
 import org.firstinspires.ftc.teamcode.hardware.tidev2.Shoulder;
 import org.firstinspires.ftc.teamcode.hardware.tidev2.Viper;
 
-
+@Disabled
 @Config
 @Autonomous(name = "Right Auto", group = "Autonomous")
 public class rightAuto extends LinearOpMode {

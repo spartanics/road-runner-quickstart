@@ -9,6 +9,7 @@ import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
@@ -18,7 +19,7 @@ import org.firstinspires.ftc.teamcode.hardware.tidev2.Intake;
 import org.firstinspires.ftc.teamcode.hardware.tidev2.Shoulder;
 import org.firstinspires.ftc.teamcode.hardware.tidev2.Viper;
 
-
+@Disabled
 @Config
 @Autonomous(name = "4 clip Robotnik Style", group = "Autonomous")
 public class rightAutoAlt extends LinearOpMode {

@@ -43,7 +43,6 @@ public class rightAutoJAlt extends LinearOpMode {
         startPose = new Pose2d(14, -61, Math.toRadians(90));
         drive = new MecanumDrive(hardwareMap, startPose);
         TrajectoryActionBuilder build = drive.actionBuilder(startPose)
-                .afterTime(0, viper.autonSlightOut())
                 .afterTime(0, shoulder.autonHC())
                 .afterTime(0.5, viper.autonHangSpecimen())
                 .strafeTo(new Vector2d(5, -31))
@@ -77,7 +76,7 @@ public class rightAutoJAlt extends LinearOpMode {
                 //raise arm to clip
                 .afterTime(1.4, viper.autonHangSpecimen())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(7, -35), Math.toRadians(90)), Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(new Vector2d(3, -35), Math.toRadians(90)), Math.toRadians(90))
 
 
                 //clip, routing to push final sample and grab specimen
@@ -98,7 +97,7 @@ public class rightAutoJAlt extends LinearOpMode {
                 //raise arm to clip
                 .afterTime(1.5, viper.autonHangSpecimen())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(4, -35), Math.toRadians(90)), Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(new Vector2d(1, -35), Math.toRadians(90)), Math.toRadians(90))
 
                 .afterTime(0, claw.autonOpenClaw())
                 .afterTime(0, viper.autonSlightOut())
@@ -115,7 +114,7 @@ public class rightAutoJAlt extends LinearOpMode {
                 //raise arm to clip
                 .afterTime(1.5, viper.autonHangSpecimen())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(6, -35), Math.toRadians(90)), Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(new Vector2d(7, -35), Math.toRadians(90)), Math.toRadians(90))
 
                 .afterTime(0, claw.autonOpenClaw())
                 .afterTime(0, viper.autonSlightOut())

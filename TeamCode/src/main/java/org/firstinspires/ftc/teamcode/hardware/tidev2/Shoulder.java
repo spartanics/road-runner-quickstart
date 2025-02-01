@@ -241,10 +241,11 @@ public class Shoulder {
         myOpMode.telemetry.addData("pos Left/Right", "%4d / %4d",
                 shoulder_left.getCurrentPosition(),
                 shoulder_right.getCurrentPosition());
-        myOpMode.telemetry.addData("pidf:", pidf);
-        myOpMode.telemetry.addData("pos:", armPos);
-        myOpMode.telemetry.addData("target:", target);
-        myOpMode.telemetry.addData("curr. controller:", curr_controller);
+        myOpMode.telemetry.addData("degree", toDegrees(getCurrentPosition()));
+        myOpMode.telemetry.addData("pidf", pidf);
+        myOpMode.telemetry.addData("pos", armPos);
+        myOpMode.telemetry.addData("target", target);
+        myOpMode.telemetry.addData("curr. controller", curr_controller);
         myOpMode.telemetry.addLine();
     }
 

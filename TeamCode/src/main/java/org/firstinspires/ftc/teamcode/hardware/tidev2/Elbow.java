@@ -126,9 +126,9 @@ public class Elbow {
         elbPos = elbow.getCurrentPosition();
 
         myOpMode.telemetry.addLine("----ELBOW----");
-        myOpMode.telemetry.addData("Position:", elbPos);
-        myOpMode.telemetry.addData("Power:", pidf);
-        myOpMode.telemetry.addData("Target:", target);
+        myOpMode.telemetry.addData("Position", elbPos);
+        myOpMode.telemetry.addData("Power", pidf);
+        myOpMode.telemetry.addData("Target", target);
         myOpMode.telemetry.addLine();
     }
 
