@@ -113,7 +113,7 @@ public class leftAuto extends LinearOpMode {
                 .afterTime(0, intake.autoStoptake())
                 .afterTime(0, elbow.autonZero())
                 .afterTime(0, viper.autonDown())
-                .waitSeconds(1)
+                .waitSeconds(1.2)
                 .afterTime(0, shoulder.autonDown())
                 .strafeTo(new Vector2d(-54.25, -54.25))
                 //three in hb
