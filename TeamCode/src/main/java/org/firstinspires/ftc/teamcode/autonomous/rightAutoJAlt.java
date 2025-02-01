@@ -45,12 +45,14 @@ public class rightAutoJAlt extends LinearOpMode {
         TrajectoryActionBuilder build = drive.actionBuilder(startPose)
                 .afterTime(0, shoulder.autonHC())
                 .afterTime(0.5, viper.autonHangSpecimen())
-                .strafeTo(new Vector2d(5, -31))
+                .waitSeconds(1)
+                .strafeTo(new Vector2d(5, -35))
 
                 //put arm up while strafing
                 //stop and place the sample on the bar
                 .afterTime(0, claw.autonOpenClaw())
                 .afterTime(0, viper.autonSlightOut())
+                .waitSeconds(0.2)
 
 
 
@@ -114,7 +116,7 @@ public class rightAutoJAlt extends LinearOpMode {
                 //raise arm to clip
                 .afterTime(1.5, viper.autonHangSpecimen())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(7, -35), Math.toRadians(90)), Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(new Vector2d(5, -35), Math.toRadians(90)), Math.toRadians(90))
 
                 .afterTime(0, claw.autonOpenClaw())
                 .afterTime(0, viper.autonSlightOut())
