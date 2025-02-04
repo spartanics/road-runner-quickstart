@@ -141,8 +141,14 @@ public class BucketOperatorFSM {
         // listen to other commands
         switch (bucketState) {
             case ZERO_BUCKETSTATE:
+                shoulder.resetFsmBucketState();
+                if (shoulder.isInZeroState()) {
+                    shoulder.restoreControllerUp();
+                }
                 if (gamepad.dpad_left) {
                     // go to middle bucket
+                    shoulder.setTaperControllerUp();
+                    shoulder.startFsmBucketState();
                     shoulder.setTarget(POS_SHOULDER_MIDDLE_BUCKET);
                     bucketState = BucketState.MIDDLE_BUCKETSTATE;
                     bucketStateTimer.reset();
@@ -150,7 +156,7 @@ public class BucketOperatorFSM {
 
                 if (gamepad.dpad_right) {
                     bucketStateTimer.reset();
-                    shoulder.setTarget(540);
+                    shoulder.setTarget(510);
                     bucketState = BucketState.READY_TO_CLIP;
                 }
                 break;
@@ -158,7 +164,7 @@ public class BucketOperatorFSM {
             case READY_TO_CLIP:
                 if (gamepad.a) {
                     bucketStateTimer.reset();
-                    viper.setTarget(1700);
+                    viper.setTarget(3000);
 
                     bucketState = BucketState.CLIPPING;
                 }
