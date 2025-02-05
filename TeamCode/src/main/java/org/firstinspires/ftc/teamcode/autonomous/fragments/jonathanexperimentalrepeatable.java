@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.autonomous;
+package org.firstinspires.ftc.teamcode.autonomous.fragments;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.InstantAction;
@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.MecanumDrive;
+import org.firstinspires.ftc.teamcode.autonomous.PoseStorage;
 import org.firstinspires.ftc.teamcode.hardware.tidev2.Claw;
 import org.firstinspires.ftc.teamcode.hardware.tidev2.Elbow;
 import org.firstinspires.ftc.teamcode.hardware.tidev2.Intake;
@@ -21,8 +22,8 @@ import org.firstinspires.ftc.teamcode.hardware.tidev2.Viper;
 
 
 @Config
-@Autonomous(name = "JoJo's Bizzare 4 clip", group = "Autonomous")
-public class rightAutoJAlt extends LinearOpMode {
+@Autonomous(name = "repeatable segment", group = "Autonomous")
+public class jonathanexperimentalrepeatable extends LinearOpMode {
     Pose2d startPose;
     MecanumDrive drive;
 
@@ -31,47 +32,13 @@ public class rightAutoJAlt extends LinearOpMode {
     Intake intake = new Intake(this);
     Viper viper = new Viper(this);
     Claw claw = new Claw(this);
-    
-    
-
-
-
 
 
     @Override
     public void runOpMode() throws InterruptedException {
-        startPose = new Pose2d(14, -61, Math.toRadians(90));
+        startPose = new Pose2d(35, -59.5, Math.toRadians(-80));
         drive = new MecanumDrive(hardwareMap, startPose);
         TrajectoryActionBuilder build = drive.actionBuilder(startPose)
-
-                .afterTime(0, shoulder.autonHC())
-                .afterTime(0.5, viper.autonHangSpecimen())
-                .waitSeconds(0.7)
-                .strafeTo(new Vector2d(8, -35))
-
-                //put arm up while strafing
-                //stop and place the sample on the bar
-                .afterTime(0, claw.autonOpenClaw())
-                .afterTime(0, viper.autonSlightOut())
-                .waitSeconds(0.2)
-
-
-
-                .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(26,-43), Math.toRadians(-90)), 0)
-                .afterTime(0, shoulder.autonDown())
-
-                .splineTo(new Vector2d(45, -13), 0)
-
-                .strafeTo(new Vector2d(45,-53))
-                //one in observation zone
-                .setReversed(true)
-                .splineToConstantHeading(new Vector2d(45,-13), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(53,-13), Math.toRadians(-90))
-                //.strafeTo(new Vector2d(43,-59))
-                //undo ^ if something goes wrong.
-                .splineToSplineHeading(new Pose2d(new Vector2d(53,-60), Math.toRadians(-80)), Math.toRadians(-90))
-
                 .afterTime(0, claw.autonCloseClaw())
                 .waitSeconds(0.3)
 
@@ -92,47 +59,9 @@ public class rightAutoJAlt extends LinearOpMode {
                 .setReversed(true)
                 .splineToSplineHeading(new Pose2d(new Vector2d(35, -59.5), Math.toRadians(-80)), Math.toRadians(0))
 
-                .afterTime(0, claw.autonCloseClaw())
-                .waitSeconds(0.3)
-
-                .afterTime(0.3, shoulder.autonHC())
-                //grab sample, routing towards chamber.
-                //raise arm to clip
-                .afterTime(1.5, viper.autonHangSpecimen())
-                .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(8, -35), Math.toRadians(90)), Math.toRadians(90))
-
-                .afterTime(0, claw.autonOpenClaw())
-                .strafeTo(new Vector2d(6, -35))
-                .afterTime(0, shoulder.autonDownHC())
-                .afterTime(0, viper.autonSlightOut())
-
-
-                .afterTime(1, shoulder.autonDown())
-                .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(35, -59.5), Math.toRadians(-80)), Math.toRadians(0))
-
-                .afterTime(0, claw.autonCloseClaw())
-                .waitSeconds(0.3)
-
-                .afterTime(0.3, shoulder.autonHC())
-                //grab sample, routing towards chamber.
-                //raise arm to clip
-                .afterTime(1.5, viper.autonHangSpecimen())
-                .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(8, -35), Math.toRadians(90)), Math.toRadians(90))
-
-                .afterTime(0, claw.autonOpenClaw())
-                .afterTime(0.3, shoulder.autonDownHC())
-                .afterTime(0.3, viper.autonSlightOut())
-
-
-                .afterTime(1, shoulder.autonDown())
-                .setReversed(true)
-
-                .strafeTo(new Vector2d(100, -100))
 
                 ;
+
 
         shoulder.init();
         elbow.init();

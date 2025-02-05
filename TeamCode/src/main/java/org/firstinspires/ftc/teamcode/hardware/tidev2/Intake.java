@@ -160,6 +160,13 @@ public class Intake {
     public void sendTelemetry() {
         myOpMode.telemetry.addLine("----INTAKE----");
         myOpMode.telemetry.addData("Power", "%.2f", power);
+        if (power < 0) {
+            myOpMode.telemetry.addLine("Status: Outtaking");
+        } else if (power > 0) {
+            myOpMode.telemetry.addLine("Status: Intaking");
+        } else {
+            myOpMode.telemetry.addLine("Status: Idle");
+        }
         myOpMode.telemetry.addLine();
     }
 }
