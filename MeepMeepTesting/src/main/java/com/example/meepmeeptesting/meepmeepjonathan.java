@@ -103,9 +103,11 @@ public class meepmeepjonathan {
 
                 //.afterTime(1, shoulder.autonDown())
 
+                        .setReversed(true)
+                .strafeToSplineHeading(new Vector2d(13, -40), Math.toRadians(180-42))
                 .setReversed(true)
-
-                .strafeTo(new Vector2d(100, -100))
+                                .lineToX(90)
+               //.strafeTo(new Vector2d(100, -100))
 
 
                 .build());
