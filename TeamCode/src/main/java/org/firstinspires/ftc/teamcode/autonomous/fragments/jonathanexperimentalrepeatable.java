@@ -36,7 +36,7 @@ public class jonathanexperimentalrepeatable extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-        startPose = new Pose2d(35, -59.5, Math.toRadians(-80));
+        startPose = new Pose2d(35, -59.5, Math.toRadians(-90));
         drive = new MecanumDrive(hardwareMap, startPose);
         TrajectoryActionBuilder build = drive.actionBuilder(startPose)
                 .afterTime(0, claw.autonCloseClaw())
@@ -57,7 +57,7 @@ public class jonathanexperimentalrepeatable extends LinearOpMode {
 
                 .afterTime(1, shoulder.autonDown())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(35, -59.5), Math.toRadians(-80)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(new Vector2d(35, -59.5), Math.toRadians(-90)), Math.toRadians(0))
 
 
                 ;

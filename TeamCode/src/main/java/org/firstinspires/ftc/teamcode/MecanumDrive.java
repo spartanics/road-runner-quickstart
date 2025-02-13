@@ -103,6 +103,16 @@ public final class MecanumDrive {
                     kinematics.new WheelVelConstraint(PARAMS.maxWheelVel),
                     new AngularVelConstraint(PARAMS.maxAngVel)
             ));
+    public final VelConstraint halfVelConstraint =
+            new MinVelConstraint(Arrays.asList(
+                    kinematics.new WheelVelConstraint(PARAMS.maxWheelVel/3),
+                    new AngularVelConstraint(PARAMS.maxAngVel/3)
+            ));
+    public final VelConstraint slightlSlowerVelConstraint =
+            new MinVelConstraint(Arrays.asList(
+                    kinematics.new WheelVelConstraint(PARAMS.maxWheelVel * 0.7),
+                    new AngularVelConstraint(PARAMS.maxAngVel * 0.7)
+            ));
     public final AccelConstraint defaultAccelConstraint =
             new ProfileAccelConstraint(PARAMS.minProfileAccel, PARAMS.maxProfileAccel);
 
