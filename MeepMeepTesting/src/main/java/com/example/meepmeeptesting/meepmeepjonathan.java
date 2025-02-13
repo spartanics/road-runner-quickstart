@@ -11,40 +11,46 @@ public class meepmeepjonathan {
         MeepMeep meepMeep = new MeepMeep(750);
 
 
-
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .build();
 
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(14, -61, Math.toRadians(90)))
+
                 //.afterTime(0, shoulder.autonHC())
                 //.afterTime(0.5, viper.autonHangSpecimen())
-                .waitSeconds(0.7)
-                .strafeTo(new Vector2d(8, -35))
+
+                .strafeTo(new Vector2d(6, -37))//, drive.halfVelConstraint)
 
                 //put arm up while strafing
                 //stop and place the sample on the bar
                 //.afterTime(0, claw.autonOpenClaw())
+                //.afterTime(0, shoulder.autonDownHC())
                 //.afterTime(0, viper.autonSlightOut())
-                .waitSeconds(0.2)
+
+
+                //.afterTime(1, shoulder.autonDown())
 
 
 
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(26,-43), Math.toRadians(-90)), 0)
+                .splineToSplineHeading(new Pose2d(new Vector2d(31,-43), Math.toRadians(-90)), 0)
                 //.afterTime(0, shoulder.autonDown())
 
-                .splineTo(new Vector2d(45, -13), 0)
+                .splineToConstantHeading(new Vector2d(45, -13), 0)
 
-                .strafeTo(new Vector2d(45,-53))
+                .splineToConstantHeading(new Vector2d(45,-33), -90)
+                .splineToConstantHeading(new Vector2d(45,-53), -90)
                 //one in observation zone
                 .setReversed(true)
                 .splineToConstantHeading(new Vector2d(45,-13), Math.toRadians(90))
-                .splineToConstantHeading(new Vector2d(53,-13), Math.toRadians(-90))
+                .splineToConstantHeading(new Vector2d(60,-20), Math.toRadians(-90))
+
                 //.strafeTo(new Vector2d(43,-59))
                 //undo ^ if something goes wrong.
-                .splineToSplineHeading(new Pose2d(new Vector2d(53,-60), Math.toRadians(-80)), Math.toRadians(-90))
+                .splineToSplineHeading(new Pose2d(new Vector2d(55,-59), Math.toRadians(-80)), Math.toRadians(-90)) //slightvel here
+                //CRASH!!! INTO THE WALL!!!
 
                 //.afterTime(0, claw.autonCloseClaw())
                 .waitSeconds(0.3)
@@ -54,17 +60,17 @@ public class meepmeepjonathan {
                 //raise arm to clip
                 //.afterTime(1.5, viper.autonHangSpecimen())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(8, -35), Math.toRadians(90)), Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(new Vector2d(8, -39), Math.toRadians(90)), Math.toRadians(90))
 
                 //.afterTime(0, claw.autonOpenClaw())
-                .strafeTo(new Vector2d(6, -35))
+                .strafeTo(new Vector2d(6, -39))
                 //.afterTime(0, shoulder.autonDownHC())
                 //.afterTime(0, viper.autonSlightOut())
 
 
                 //.afterTime(1, shoulder.autonDown())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(35, -59.5), Math.toRadians(-80)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(new Vector2d(35, -60), Math.toRadians(-80)), Math.toRadians(0))
 
                 //.afterTime(0, claw.autonCloseClaw())
                 .waitSeconds(0.3)
@@ -74,17 +80,17 @@ public class meepmeepjonathan {
                 //raise arm to clip
                 //.afterTime(1.5, viper.autonHangSpecimen())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(8, -35), Math.toRadians(90)), Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(new Vector2d(8, -38), Math.toRadians(90)), Math.toRadians(90))
 
                 //.afterTime(0, claw.autonOpenClaw())
-                .strafeTo(new Vector2d(6, -35))
+                .strafeTo(new Vector2d(6, -38))
                 //.afterTime(0, shoulder.autonDownHC())
                 //.afterTime(0, viper.autonSlightOut())
 
 
                 //.afterTime(1, shoulder.autonDown())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(35, -59.5), Math.toRadians(-80)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(new Vector2d(35, -60), Math.toRadians(-80)), Math.toRadians(0))
 
                 //.afterTime(0, claw.autonCloseClaw())
                 .waitSeconds(0.3)
@@ -94,20 +100,18 @@ public class meepmeepjonathan {
                 //raise arm to clip
                 //.afterTime(1.5, viper.autonHangSpecimen())
                 .setReversed(true)
-                .splineToSplineHeading(new Pose2d(new Vector2d(8, -35), Math.toRadians(90)), Math.toRadians(90))
+                .splineToSplineHeading(new Pose2d(new Vector2d(8, -38), Math.toRadians(90)), Math.toRadians(90))
 
                 //.afterTime(0, claw.autonOpenClaw())
-                //.afterTime(0.3, shoulder.autonDownHC())
-                //.afterTime(0.3, viper.autonSlightOut())
+                //.afterTime(0, shoulder.autonDownHC())
+                //.afterTime(0, viper.autonSlightOut())
 
 
                 //.afterTime(1, shoulder.autonDown())
 
-                        .setReversed(true)
-                .strafeToSplineHeading(new Vector2d(13, -40), Math.toRadians(180-42))
+                //.strafeToSplineHeading(new Vector2d(13, -40), Math.toRadians(180-42))
                 .setReversed(true)
-                                .lineToX(90)
-               //.strafeTo(new Vector2d(100, -100))
+                .splineTo(new Vector2d(40, -60), -45)
 
 
                 .build());
