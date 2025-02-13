@@ -71,7 +71,7 @@ public class rightAutoJAlt extends LinearOpMode {
                 .splineToConstantHeading(new Vector2d(45, -13), 0)
 
                 .splineToConstantHeading(new Vector2d(45,-33), -90)
-                .splineToConstantHeading(new Vector2d(45,-53), -90)
+                .splineToConstantHeading(new Vector2d(45,-48), -90)
                 //one in observation zone
                 .setReversed(true)
                 .splineToConstantHeading(new Vector2d(45,-13), Math.toRadians(90))
